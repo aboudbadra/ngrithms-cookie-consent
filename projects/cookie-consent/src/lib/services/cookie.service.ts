@@ -1,5 +1,5 @@
-import { DOCUMENT, Injectable, PLATFORM_ID, inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 /**
  * SSR-safe wrapper around `document.cookie`. All methods are no-ops on the server.

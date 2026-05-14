@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, DOCUMENT, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { ConsentService } from '@ngrithms/cookie-consent';
 
 type Preset = 'default' | 'dark' | 'minimal' | 'rounded';

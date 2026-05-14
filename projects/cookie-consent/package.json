@@ -1,6 +1,6 @@
 {
   "name": "@ngrithms/cookie-consent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Modern Angular cookie consent — standalone, signals, provideCookieConsent(), SSR-safe, zero dependencies.",
   "keywords": [
     "angular",
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/aboudbadra/ngrithms-cookie-consent",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aboudbadra/ngrithms-cookie-consent.git"
+    "url": "git+https://github.com/aboudbadra/ngrithms-cookie-consent.git"
   },
   "bugs": {
     "url": "https://github.com/aboudbadra/ngrithms-cookie-consent/issues"

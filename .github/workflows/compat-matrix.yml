@@ -1,0 +1,82 @@
+name: Angular compatibility matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    name: Angular ${{ matrix.angular }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: ['17', '18', '19', '20', '21']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Pack tarball
+        id: pack
+        run: |
+          cd dist/cookie-consent
+          tarball=$(npm pack --silent | tail -n1)
+          echo "tarball=$(pwd)/$tarball" >> "$GITHUB_OUTPUT"
+
+      - name: Scaffold throwaway Angular ${{ matrix.angular }} app
+        run: |
+          cd /tmp
+          npx --yes @angular/cli@${{ matrix.angular }} new probe \
+            --defaults --skip-install --skip-git --style=scss \
+            --routing=true --inline-style --inline-template --skip-tests
+          cd probe
+          npm install --silent
+          npm install --silent "${{ steps.pack.outputs.tarball }}"
+
+      - name: Wire the library into the probe app
+        run: |
+          cat > /tmp/probe/src/main.ts <<'EOF'
+          import { bootstrapApplication } from '@angular/platform-browser';
+          import { Component } from '@angular/core';
+          import {
+            provideCookieConsent,
+            ANALYTICS_PRESET,
+            ConsentBannerComponent,
+            ConsentBadgeComponent,
+            IfConsentDirective,
+          } from '@ngrithms/cookie-consent';
+
+          @Component({
+            selector: 'app-root',
+            standalone: true,
+            imports: [ConsentBannerComponent, ConsentBadgeComponent, IfConsentDirective],
+            template: `
+              <ngr-consent-banner></ngr-consent-banner>
+              <ngr-consent-badge></ngr-consent-badge>
+              <div *ngrIfConsent="'google_analytics'">analytics on</div>
+            `,
+          })
+          export class App {}
+
+          bootstrapApplication(App, {
+            providers: [
+              provideCookieConsent({ categories: [ANALYTICS_PRESET] }),
+            ],
+          });
+          EOF
+
+      - name: Build the probe app
+        run: |
+          cd /tmp/probe
+          npx ng build --configuration=production
