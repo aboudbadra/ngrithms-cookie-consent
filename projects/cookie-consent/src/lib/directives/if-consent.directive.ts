@@ -13,18 +13,18 @@ import { ConsentService } from '../services/consent.service';
  * Conditionally render template content based on per-item consent.
  *
  * @example
- * <div *ngxIfConsent="'google_analytics'">
+ * <div *ngrIfConsent="'google_analytics'">
  *   <iframe src="..."></iframe>
  * </div>
  *
  * Optional `else` template:
  *
  * @example
- * <div *ngxIfConsent="'google_analytics'; else placeholder">...</div>
+ * <div *ngrIfConsent="'google_analytics'; else placeholder">...</div>
  * <ng-template #placeholder>Enable analytics to see this content.</ng-template>
  */
 @Directive({
-  selector: '[ngxIfConsent]',
+  selector: '[ngrIfConsent]',
   standalone: true,
 })
 export class IfConsentDirective {
@@ -33,16 +33,16 @@ export class IfConsentDirective {
   private readonly consent = inject(ConsentService);
 
   /** The `CookieItem.key` to gate on. */
-  readonly ngxIfConsent = input.required<string>();
+  readonly ngrIfConsent = input.required<string>();
   /** Optional template to show when consent is not granted. */
-  readonly ngxIfConsentElse = input<TemplateRef<unknown> | null>(null);
+  readonly ngrIfConsentElse = input<TemplateRef<unknown> | null>(null);
 
   private currentView: EmbeddedViewRef<unknown> | null = null;
   private currentElseView: EmbeddedViewRef<unknown> | null = null;
 
   constructor() {
     effect(() => {
-      const granted = this.consent.isGranted(this.ngxIfConsent())();
+      const granted = this.consent.isGranted(this.ngrIfConsent())();
       this.render(granted);
     });
   }
@@ -55,7 +55,7 @@ export class IfConsentDirective {
       }
     } else {
       this.clearMain();
-      const elseTpl = this.ngxIfConsentElse();
+      const elseTpl = this.ngrIfConsentElse();
       if (elseTpl && !this.currentElseView) {
         this.currentElseView = this.vcr.createEmbeddedView(elseTpl);
       }

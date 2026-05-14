@@ -6,7 +6,7 @@ import { TranslatableString } from './translatable-string';
  * The category's role is to group related items under one heading in the consent UI.
  */
 export interface Category {
-  /** Stable category key (used internally; NOT used by `*ngxIfConsent`). */
+  /** Stable category key (used internally; NOT used by `*ngrIfConsent`). */
   key: string;
   /** Heading shown above this category's items in the consent UI. */
   name: string | TranslatableString;

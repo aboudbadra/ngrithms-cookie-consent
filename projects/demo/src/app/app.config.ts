@@ -6,7 +6,7 @@ import {
   MARKETING_PRESET,
   FUNCTIONAL_PRESET,
   SOCIAL_PRESET,
-} from '@ngxt/cookie-consent';
+} from '@ngrithms/cookie-consent';
 
 import { routes } from './app.routes';
 

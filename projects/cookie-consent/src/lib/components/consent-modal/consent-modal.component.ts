@@ -6,11 +6,11 @@ import { CookieDetail } from '../../types/cookie-detail';
 import { TranslatableString } from '../../types/translatable-string';
 
 /**
- * Detailed customisation modal. Embedded inside `<ngxt-consent-banner>` and opened via
+ * Detailed customisation modal. Embedded inside `<ngr-consent-banner>` and opened via
  * the "Customise" button — you don't normally need to place this directly.
  */
 @Component({
-  selector: 'ngxt-consent-modal',
+  selector: 'ngr-consent-modal',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './consent-modal.component.html',

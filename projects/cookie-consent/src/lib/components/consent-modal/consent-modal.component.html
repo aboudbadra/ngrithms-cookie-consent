@@ -1,18 +1,18 @@
 @if (visible()) {
-  <div class="ngxt-consent-modal__backdrop" (click)="close()" aria-hidden="true"></div>
+  <div class="ngr-consent-modal__backdrop" (click)="close()" aria-hidden="true"></div>
 
   <div
-    class="ngxt-consent-modal"
+    class="ngr-consent-modal"
     [class]="config.customClass"
     role="dialog"
     aria-modal="true"
     [attr.aria-label]="title()"
   >
-    <header class="ngxt-consent-modal__header">
-      <h2 class="ngxt-consent-modal__title">{{ title() }}</h2>
+    <header class="ngr-consent-modal__header">
+      <h2 class="ngr-consent-modal__title">{{ title() }}</h2>
       <button
         type="button"
-        class="ngxt-consent-modal__close"
+        class="ngr-consent-modal__close"
         [attr.aria-label]="closeLabel()"
         (click)="close()"
       >
@@ -25,40 +25,40 @@
       </button>
     </header>
 
-    <p class="ngxt-consent-modal__description">{{ description() }}</p>
+    <p class="ngr-consent-modal__description">{{ description() }}</p>
 
-    <div class="ngxt-consent-modal__categories">
+    <div class="ngr-consent-modal__categories">
       @for (category of categories; track trackByKey($index, category)) {
-        <section class="ngxt-consent-modal__category">
-          <h3 class="ngxt-consent-modal__category-title">{{ resolve(category.name) }}</h3>
+        <section class="ngr-consent-modal__category">
+          <h3 class="ngr-consent-modal__category-title">{{ resolve(category.name) }}</h3>
           @if (category.description) {
-            <p class="ngxt-consent-modal__category-description">
+            <p class="ngr-consent-modal__category-description">
               {{ resolve(category.description) }}
             </p>
           }
 
-          <ul class="ngxt-consent-modal__items">
+          <ul class="ngr-consent-modal__items">
             @for (item of category.items; track trackByKey($index, item)) {
-              <li class="ngxt-consent-modal__item">
-                <div class="ngxt-consent-modal__item-row">
-                  <div class="ngxt-consent-modal__item-text">
-                    <div class="ngxt-consent-modal__item-name">{{ resolve(item.name) }}</div>
-                    <p class="ngxt-consent-modal__item-description">
+              <li class="ngr-consent-modal__item">
+                <div class="ngr-consent-modal__item-row">
+                  <div class="ngr-consent-modal__item-text">
+                    <div class="ngr-consent-modal__item-name">{{ resolve(item.name) }}</div>
+                    <p class="ngr-consent-modal__item-description">
                       {{ resolve(item.description) }}
                     </p>
                   </div>
 
-                  <div class="ngxt-consent-modal__item-toggle">
+                  <div class="ngr-consent-modal__item-toggle">
                     @if (essentialItemKeys.includes(item.key)) {
-                      <span class="ngxt-consent-modal__locked">{{ lockedLabel() }}</span>
+                      <span class="ngr-consent-modal__locked">{{ lockedLabel() }}</span>
                     } @else {
-                      <label class="ngxt-consent-modal__switch">
+                      <label class="ngr-consent-modal__switch">
                         <input
                           type="checkbox"
                           [checked]="isItemSelected(item.key)"
                           (change)="toggleItem(item.key)"
                         />
-                        <span class="ngxt-consent-modal__switch-track"></span>
+                        <span class="ngr-consent-modal__switch-track"></span>
                       </label>
                     }
                   </div>
@@ -67,14 +67,14 @@
                 @if (config.showCookieDetails && item.cookies?.length) {
                   <button
                     type="button"
-                    class="ngxt-consent-modal__details-toggle"
+                    class="ngr-consent-modal__details-toggle"
                     (click)="toggleDetails(item.key)"
                   >
                     {{ isDetailsExpanded(item.key) ? hideDetailsLabel() : showDetailsLabel() }}
                   </button>
 
                   @if (isDetailsExpanded(item.key)) {
-                    <table class="ngxt-consent-modal__cookies">
+                    <table class="ngr-consent-modal__cookies">
                       <thead>
                         <tr>
                           <th>{{ colNameLabel() }}</th>
@@ -103,11 +103,11 @@
       }
     </div>
 
-    <footer class="ngxt-consent-modal__footer">
+    <footer class="ngr-consent-modal__footer">
       @if (!config.hideDeny) {
         <button
           type="button"
-          class="ngxt-consent-modal__btn ngxt-consent-modal__btn--secondary"
+          class="ngr-consent-modal__btn ngr-consent-modal__btn--secondary"
           (click)="denyAll()"
         >
           {{ denyAllLabel() }}
@@ -115,14 +115,14 @@
       }
       <button
         type="button"
-        class="ngxt-consent-modal__btn ngxt-consent-modal__btn--secondary"
+        class="ngr-consent-modal__btn ngr-consent-modal__btn--secondary"
         (click)="save()"
       >
         {{ savePreferencesLabel() }}
       </button>
       <button
         type="button"
-        class="ngxt-consent-modal__btn ngxt-consent-modal__btn--primary"
+        class="ngr-consent-modal__btn ngr-consent-modal__btn--primary"
         (click)="acceptAll()"
       >
         {{ acceptAllLabel() }}

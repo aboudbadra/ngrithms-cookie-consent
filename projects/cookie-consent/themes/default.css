@@ -1,58 +1,58 @@
-/* @ngxt/cookie-consent — default theme. Light, neutral, system fonts. */
+/* @ngrithms/cookie-consent — default theme. Light, neutral, system fonts. */
 :root {
-  --ngxt-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --ngxt-font-size: 14px;
-  --ngxt-title-size: 16px;
+  --ngrithms-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ngrithms-font-size: 14px;
+  --ngrithms-title-size: 16px;
 
-  --ngxt-z-banner: 9999;
-  --ngxt-z-badge: 9998;
-  --ngxt-z-modal-backdrop: 10000;
-  --ngxt-z-modal: 10001;
+  --ngrithms-z-banner: 9999;
+  --ngrithms-z-badge: 9998;
+  --ngrithms-z-modal-backdrop: 10000;
+  --ngrithms-z-modal: 10001;
 
-  --ngxt-banner-bg: #ffffff;
-  --ngxt-banner-fg: #1f2937;
-  --ngxt-banner-fg-muted: rgba(31, 41, 55, 0.85);
-  --ngxt-banner-border: rgba(0, 0, 0, 0.08);
-  --ngxt-banner-radius: 12px;
-  --ngxt-banner-padding: 20px 24px;
-  --ngxt-banner-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-  --ngxt-banner-max-width: 720px;
-  --ngxt-banner-gap: 24px;
+  --ngrithms-banner-bg: #ffffff;
+  --ngrithms-banner-fg: #1f2937;
+  --ngrithms-banner-fg-muted: rgba(31, 41, 55, 0.85);
+  --ngrithms-banner-border: rgba(0, 0, 0, 0.08);
+  --ngrithms-banner-radius: 12px;
+  --ngrithms-banner-padding: 20px 24px;
+  --ngrithms-banner-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  --ngrithms-banner-max-width: 720px;
+  --ngrithms-banner-gap: 24px;
 
-  --ngxt-modal-backdrop: rgba(0, 0, 0, 0.5);
-  --ngxt-modal-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  --ngrithms-modal-backdrop: rgba(0, 0, 0, 0.5);
+  --ngrithms-modal-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
 
-  --ngxt-footer-bg: rgba(0, 0, 0, 0.02);
-  --ngxt-hover-bg: rgba(0, 0, 0, 0.06);
-  --ngxt-item-bg: transparent;
-  --ngxt-item-radius: 10px;
+  --ngrithms-footer-bg: rgba(0, 0, 0, 0.02);
+  --ngrithms-hover-bg: rgba(0, 0, 0, 0.06);
+  --ngrithms-item-bg: transparent;
+  --ngrithms-item-radius: 10px;
 
-  --ngxt-link: #2563eb;
+  --ngrithms-link: #2563eb;
 
-  --ngxt-btn-padding: 8px 14px;
-  --ngxt-btn-radius: 8px;
+  --ngrithms-btn-padding: 8px 14px;
+  --ngrithms-btn-radius: 8px;
 
-  --ngxt-btn-primary-bg: #111827;
-  --ngxt-btn-primary-bg-hover: #000000;
-  --ngxt-btn-primary-fg: #ffffff;
+  --ngrithms-btn-primary-bg: #111827;
+  --ngrithms-btn-primary-bg-hover: #000000;
+  --ngrithms-btn-primary-fg: #ffffff;
 
-  --ngxt-btn-secondary-bg: transparent;
-  --ngxt-btn-secondary-bg-hover: rgba(0, 0, 0, 0.04);
-  --ngxt-btn-secondary-fg: #1f2937;
-  --ngxt-btn-secondary-border: rgba(0, 0, 0, 0.16);
+  --ngrithms-btn-secondary-bg: transparent;
+  --ngrithms-btn-secondary-bg-hover: rgba(0, 0, 0, 0.04);
+  --ngrithms-btn-secondary-fg: #1f2937;
+  --ngrithms-btn-secondary-border: rgba(0, 0, 0, 0.16);
 
-  --ngxt-btn-ghost-fg: #2563eb;
-  --ngxt-btn-ghost-fg-hover: #1d4ed8;
+  --ngrithms-btn-ghost-fg: #2563eb;
+  --ngrithms-btn-ghost-fg-hover: #1d4ed8;
 
-  --ngxt-switch-on: #111827;
-  --ngxt-switch-off: #d1d5db;
-  --ngxt-locked-fg: #16a34a;
+  --ngrithms-switch-on: #111827;
+  --ngrithms-switch-off: #d1d5db;
+  --ngrithms-locked-fg: #16a34a;
 
-  --ngxt-badge-bg: #ffffff;
-  --ngxt-badge-fg: #1f2937;
-  --ngxt-badge-border: rgba(0, 0, 0, 0.08);
-  --ngxt-badge-radius: 999px;
-  --ngxt-badge-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --ngxt-badge-size: 44px;
-  --ngxt-badge-offset: 16px;
+  --ngrithms-badge-bg: #ffffff;
+  --ngrithms-badge-fg: #1f2937;
+  --ngrithms-badge-border: rgba(0, 0, 0, 0.08);
+  --ngrithms-badge-radius: 999px;
+  --ngrithms-badge-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --ngrithms-badge-size: 44px;
+  --ngrithms-badge-offset: 16px;
 }

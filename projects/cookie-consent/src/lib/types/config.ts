@@ -52,7 +52,7 @@ export interface CookieConsentConfig {
   /** Class applied to the banner/modal root for BYO styling. */
   customClass?: string;
 
-  /** Cookie name prefix for persisted state. Default: `'ngxt_consent_'`. */
+  /** Cookie name prefix for persisted state. Default: `'ngrithms_consent_'`. */
   cookiePrefix?: string;
   /** How long the consent decision persists, in days. Default: `365`. */
   cookieExpiryDays?: number;

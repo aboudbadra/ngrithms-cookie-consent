@@ -1,6 +1,6 @@
-# @ngxt/cookie-consent
+# @ngrithms/cookie-consent
 
-[![npm](https://img.shields.io/npm/v/@ngxt/cookie-consent.svg)](https://www.npmjs.com/package/@ngxt/cookie-consent)
+[![npm](https://img.shields.io/npm/v/@ngrithms/cookie-consent.svg)](https://www.npmjs.com/package/@ngrithms/cookie-consent)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Modern Angular cookie consent — **standalone components**, **signal-based state**, **`provideCookieConsent()` functional setup**, **SSR-safe**, **zero runtime dependencies**.
@@ -12,7 +12,7 @@ Modern Angular cookie consent — **standalone components**, **signal-based stat
 - Standalone components, no `NgModule`, no `forRoot()`
 - Signal-based reactive consent state (with RxJS observable bridges)
 - Two-level data model: **Category** (visual group) → **CookieItem** (toggle) → **CookieDetail** (informational)
-- `*ngxIfConsent="'item-key'"` structural directive
+- `*ngrIfConsent="'item-key'"` structural directive
 - Preset category constants (`ANALYTICS_PRESET`, `MARKETING_PRESET`, …) — spread them in or use as templates
 - First-class Google Consent Mode v2 adapter
 - Built-in i18n (`en`, `fr`) + custom-language API with icon path + fallback
@@ -23,7 +23,7 @@ Modern Angular cookie consent — **standalone components**, **signal-based stat
 ## Install
 
 ```bash
-npm install @ngxt/cookie-consent
+npm install @ngrithms/cookie-consent
 ```
 
 ## Quick start
@@ -31,7 +31,7 @@ npm install @ngxt/cookie-consent
 ```ts
 // main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideCookieConsent, ANALYTICS_PRESET, MARKETING_PRESET } from '@ngxt/cookie-consent';
+import { provideCookieConsent, ANALYTICS_PRESET, MARKETING_PRESET } from '@ngrithms/cookie-consent';
 import { App } from './app/app';
 
 bootstrapApplication(App, {
@@ -46,17 +46,17 @@ bootstrapApplication(App, {
 
 ```html
 <!-- app.html -->
-<ngxt-consent-banner></ngxt-consent-banner>
-<ngxt-consent-badge></ngxt-consent-badge>
+<ngr-consent-banner></ngr-consent-banner>
+<ngr-consent-badge></ngr-consent-badge>
 
-<div *ngxIfConsent="'google_analytics'">
+<div *ngrIfConsent="'google_analytics'">
   <!-- Only rendered if the user consented to Google Analytics. -->
 </div>
 ```
 
 ```css
 /* styles.css — pick a theme, or skip this and theme it yourself */
-@import '@ngxt/cookie-consent/themes/default.css';
+@import '@ngrithms/cookie-consent/themes/default.css';
 ```
 
 ## Configuration
@@ -74,7 +74,7 @@ bootstrapApplication(App, {
 | `theme` | `'default'\|'dark'\|'minimal'\|'rounded'\|'none'` | `'default'` | `'none'` ships no CSS (headless mode) |
 | `showBadgeOpener` | `boolean` | `true` | Floating re-open button |
 | `badgePosition` | `BadgePosition` | `'left-bottom'` | |
-| `cookiePrefix` | `string` | `'ngxt_consent_'` | |
+| `cookiePrefix` | `string` | `'ngrithms_consent_'` | |
 | `cookieExpiryDays` | `number` | `365` | |
 | `showCookieDetails` | `boolean` | `true` | Show the per-cookie details table |
 | `hideDeny` | `boolean` | `false` | Hide the "Reject all" button |
@@ -87,18 +87,18 @@ bootstrapApplication(App, {
 
 ```
 Category   (visual group, e.g. "Analytics")
-  └─ items: CookieItem[]   (toggleable — what *ngxIfConsent checks)
+  └─ items: CookieItem[]   (toggleable — what *ngrIfConsent checks)
        └─ cookies: CookieDetail[]  (informational rows in the details view)
 ```
 
-Each `CookieItem.key` is the value you pass to `*ngxIfConsent="'<key>'"` and to `ConsentService.isGranted(...)`.
+Each `CookieItem.key` is the value you pass to `*ngrIfConsent="'<key>'"` and to `ConsentService.isGranted(...)`.
 
 ## Presets
 
 Ship time-tested category shapes you can drop in or extend:
 
 ```ts
-import { ANALYTICS_PRESET, MARKETING_PRESET, FUNCTIONAL_PRESET, SOCIAL_PRESET, ADVERTISING_PRESET } from '@ngxt/cookie-consent';
+import { ANALYTICS_PRESET, MARKETING_PRESET, FUNCTIONAL_PRESET, SOCIAL_PRESET, ADVERTISING_PRESET } from '@ngrithms/cookie-consent';
 
 provideCookieConsent({
   categories: [
@@ -112,9 +112,9 @@ provideCookieConsent({
 ## Google Consent Mode v2
 
 ```ts
-import { applyGoogleConsentMode } from '@ngxt/cookie-consent';
+import { applyGoogleConsentMode } from '@ngrithms/cookie-consent';
 import { inject, EnvironmentInjector } from '@angular/core';
-import { ConsentService } from '@ngxt/cookie-consent';
+import { ConsentService } from '@ngrithms/cookie-consent';
 
 const consent = inject(ConsentService);
 applyGoogleConsentMode(consent, {
@@ -155,23 +155,23 @@ consent.reset();
 Pick one and import in your global stylesheet:
 
 ```css
-@import '@ngxt/cookie-consent/themes/default.css';
-@import '@ngxt/cookie-consent/themes/dark.css';
-@import '@ngxt/cookie-consent/themes/minimal.css';
-@import '@ngxt/cookie-consent/themes/rounded.css';
+@import '@ngrithms/cookie-consent/themes/default.css';
+@import '@ngrithms/cookie-consent/themes/dark.css';
+@import '@ngrithms/cookie-consent/themes/minimal.css';
+@import '@ngrithms/cookie-consent/themes/rounded.css';
 ```
 
 Or override individual CSS custom properties yourself — every visual aspect is themable:
 
 ```css
 :root {
-  --ngxt-btn-primary-bg: #4f46e5;
-  --ngxt-banner-radius: 16px;
-  --ngxt-switch-on: #16a34a;
+  --ngrithms-btn-primary-bg: #4f46e5;
+  --ngrithms-banner-radius: 16px;
+  --ngrithms-switch-on: #16a34a;
 }
 ```
 
-For full headless control set `theme: 'none'` and style the semantic class names (`.ngxt-consent-banner`, `.ngxt-consent-modal__switch`, etc.) yourself.
+For full headless control set `theme: 'none'` and style the semantic class names (`.ngr-consent-banner`, `.ngr-consent-modal__switch`, etc.) yourself.
 
 ## SSR
 

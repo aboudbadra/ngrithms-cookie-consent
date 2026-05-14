@@ -4,7 +4,7 @@ import {
   GoogleConsentMapping,
   applyGoogleConsentMode,
   consentToGoogleConsentObject,
-} from '@ngxt/cookie-consent';
+} from '@ngrithms/cookie-consent';
 
 declare global {
   interface Window {
@@ -57,7 +57,7 @@ export class GaConsentModeComponent implements OnInit, OnDestroy {
   private teardown: (() => void) | null = null;
   private originalGtag: typeof window.gtag | undefined;
 
-  protected readonly setupSnippet = `import { applyGoogleConsentMode } from '@ngxt/cookie-consent';
+  protected readonly setupSnippet = `import { applyGoogleConsentMode } from '@ngrithms/cookie-consent';
 
 applyGoogleConsentMode(consentService, {
   mapping: {

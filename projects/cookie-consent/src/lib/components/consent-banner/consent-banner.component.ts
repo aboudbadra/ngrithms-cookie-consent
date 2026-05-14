@@ -7,10 +7,10 @@ import { LanguageService } from '../../services/language.service';
 /**
  * Main consent banner. Place at the root of your app — visibility is automatic.
  *
- * @example <ngxt-consent-banner></ngxt-consent-banner>
+ * @example <ngr-consent-banner></ngr-consent-banner>
  */
 @Component({
-  selector: 'ngxt-consent-banner',
+  selector: 'ngr-consent-banner',
   standalone: true,
   imports: [ConsentModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,

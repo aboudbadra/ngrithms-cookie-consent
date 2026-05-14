@@ -4,7 +4,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@ngxt/cookie-consent": ["./dist/cookie-consent"]
+      "@ngrithms/cookie-consent": ["./dist/cookie-consent"]
     },
     "strict": true,
     "noImplicitOverride": true,

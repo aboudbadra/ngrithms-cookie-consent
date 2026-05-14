@@ -1,18 +1,18 @@
-/* @ngxt/cookie-consent — minimal theme. Flat, hairline borders, no shadows. */
+/* @ngrithms/cookie-consent — minimal theme. Flat, hairline borders, no shadows. */
 :root {
-  --ngxt-banner-radius: 0;
-  --ngxt-banner-shadow: none;
-  --ngxt-banner-border: rgba(0, 0, 0, 0.12);
-  --ngxt-banner-padding: 16px 20px;
+  --ngrithms-banner-radius: 0;
+  --ngrithms-banner-shadow: none;
+  --ngrithms-banner-border: rgba(0, 0, 0, 0.12);
+  --ngrithms-banner-padding: 16px 20px;
 
-  --ngxt-modal-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+  --ngrithms-modal-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
 
-  --ngxt-btn-radius: 0;
-  --ngxt-btn-padding: 8px 16px;
+  --ngrithms-btn-radius: 0;
+  --ngrithms-btn-padding: 8px 16px;
 
-  --ngxt-item-radius: 0;
-  --ngxt-item-bg: transparent;
+  --ngrithms-item-radius: 0;
+  --ngrithms-item-bg: transparent;
 
-  --ngxt-badge-radius: 0;
-  --ngxt-badge-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+  --ngrithms-badge-radius: 0;
+  --ngrithms-badge-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
 }

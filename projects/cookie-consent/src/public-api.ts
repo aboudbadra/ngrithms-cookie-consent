@@ -1,5 +1,5 @@
 /*
- * Public API surface of @ngxt/cookie-consent
+ * Public API surface of @ngrithms/cookie-consent
  */
 
 // Setup

@@ -3,7 +3,7 @@ import { TranslatableString } from './translatable-string';
 
 /**
  * The toggleable unit of consent. Each `CookieItem` gets its own checkbox in the consent
- * UI, and its `key` is what `*ngxIfConsent` and `ConsentService.isGranted(...)` check.
+ * UI, and its `key` is what `*ngrIfConsent` and `ConsentService.isGranted(...)` check.
  *
  * @example
  * {
@@ -17,7 +17,7 @@ import { TranslatableString } from './translatable-string';
  * }
  */
 export interface CookieItem {
-  /** Stable key. Used in `ConsentState.granted` and `*ngxIfConsent="'<key>'"`. */
+  /** Stable key. Used in `ConsentState.granted` and `*ngrIfConsent="'<key>'"`. */
   key: string;
   /** Human-readable label shown in the consent UI. */
   name: string | TranslatableString;

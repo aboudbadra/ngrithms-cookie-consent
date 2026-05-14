@@ -1,11 +1,11 @@
 {
-  "name": "ngxt-cookie-consent",
+  "name": "ngrithms-cookie-consent",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start:demo": "ng serve demo",
     "build:lib": "ng build cookie-consent",
-    "postbuild:lib": "mkdir -p node_modules/@ngxt && ln -sfn ../../dist/cookie-consent node_modules/@ngxt/cookie-consent",
+    "postbuild:lib": "mkdir -p node_modules/@ngrithms && ln -sfn ../../dist/cookie-consent node_modules/@ngrithms/cookie-consent",
     "build:lib:watch": "ng build cookie-consent --watch --configuration development",
     "build:demo": "ng build demo",
     "build": "npm run build:lib && npm run build:demo",

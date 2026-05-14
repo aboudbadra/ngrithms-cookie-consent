@@ -20,12 +20,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <h2>Style targets</h2>
       <p>Component class names you can target:</p>
       <ul>
-        <li><code>.ngxt-consent-banner</code> — banner root</li>
-        <li><code>.ngxt-consent-banner__title</code> — banner heading</li>
-        <li><code>.ngxt-consent-banner__btn--primary</code> — accept-all button</li>
-        <li><code>.ngxt-consent-modal</code> — modal root</li>
-        <li><code>.ngxt-consent-modal__switch</code> — per-item toggle</li>
-        <li><code>.ngxt-consent-badge</code> — floating opener</li>
+        <li><code>.ngr-consent-banner</code> — banner root</li>
+        <li><code>.ngr-consent-banner__title</code> — banner heading</li>
+        <li><code>.ngr-consent-banner__btn--primary</code> — accept-all button</li>
+        <li><code>.ngr-consent-modal</code> — modal root</li>
+        <li><code>.ngr-consent-modal__switch</code> — per-item toggle</li>
+        <li><code>.ngr-consent-badge</code> — floating opener</li>
       </ul>
     </section>
 
@@ -50,7 +50,7 @@ export class HeadlessComponent {
   /* etc. */
 }
 
-.my-app-consent .ngxt-consent-banner__btn--primary {
+.my-app-consent .ngr-consent-banner__btn--primary {
   background: var(--brand-accent);
   color: white;
 }`;

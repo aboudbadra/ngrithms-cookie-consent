@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ConsentService, IfConsentDirective } from '@ngxt/cookie-consent';
+import { ConsentService, IfConsentDirective } from '@ngrithms/cookie-consent';
 
 @Component({
   selector: 'demo-home',
@@ -7,7 +7,7 @@ import { ConsentService, IfConsentDirective } from '@ngxt/cookie-consent';
   imports: [IfConsentDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1 class="demo-title">@ngxt/cookie-consent</h1>
+    <h1 class="demo-title">@ngrithms/cookie-consent</h1>
     <p class="demo-subtitle">
       Modern Angular cookie consent — standalone, signals, <code>provideCookieConsent()</code>,
       SSR-safe, zero runtime dependencies.
@@ -21,10 +21,10 @@ import { ConsentService, IfConsentDirective } from '@ngxt/cookie-consent';
     <section class="demo-section">
       <h2>Reactive consent gating</h2>
       <p>
-        Wrap any content in <code>*ngxIfConsent="'item-key'"</code> and it appears only when the
+        Wrap any content in <code>*ngrIfConsent="'item-key'"</code> and it appears only when the
         user has granted consent for that item.
       </p>
-      <div *ngxIfConsent="'google_analytics'; else gaPlaceholder">
+      <div *ngrIfConsent="'google_analytics'; else gaPlaceholder">
         ✅ You consented to <strong>Google Analytics</strong>. (This block is gated.)
       </div>
       <ng-template #gaPlaceholder>
@@ -47,7 +47,7 @@ import { ConsentService, IfConsentDirective } from '@ngxt/cookie-consent';
 export class HomeComponent {
   protected readonly consent = inject(ConsentService);
 
-  protected readonly quickstart = `import { provideCookieConsent, ANALYTICS_PRESET } from '@ngxt/cookie-consent';
+  protected readonly quickstart = `import { provideCookieConsent, ANALYTICS_PRESET } from '@ngrithms/cookie-consent';
 
 bootstrapApplication(App, {
   providers: [

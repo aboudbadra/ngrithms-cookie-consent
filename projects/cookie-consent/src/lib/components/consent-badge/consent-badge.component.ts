@@ -6,17 +6,17 @@ import { LanguageService } from '../../services/language.service';
 /**
  * Floating re-open button. Place at the root of your app — visibility is automatic.
  *
- * @example <ngxt-consent-badge></ngxt-consent-badge>
+ * @example <ngr-consent-badge></ngr-consent-badge>
  */
 @Component({
-  selector: 'ngxt-consent-badge',
+  selector: 'ngr-consent-badge',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (visible()) {
       <button
         type="button"
-        class="ngxt-consent-badge"
+        class="ngr-consent-badge"
         [class]="config.customOpenerClass"
         [attr.data-position]="config.badgePosition"
         [attr.aria-label]="openLabel()"
@@ -36,41 +36,41 @@ import { LanguageService } from '../../services/language.service';
       :host {
         display: contents;
       }
-      .ngxt-consent-badge {
+      .ngr-consent-badge {
         position: fixed;
-        z-index: var(--ngxt-z-badge, 9998);
+        z-index: var(--ngrithms-z-badge, 9998);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: var(--ngxt-badge-size, 44px);
-        height: var(--ngxt-badge-size, 44px);
+        width: var(--ngrithms-badge-size, 44px);
+        height: var(--ngrithms-badge-size, 44px);
         padding: 0;
-        background: var(--ngxt-badge-bg, #ffffff);
-        color: var(--ngxt-badge-fg, #1f2937);
-        border: 1px solid var(--ngxt-badge-border, rgba(0, 0, 0, 0.08));
-        border-radius: var(--ngxt-badge-radius, 999px);
-        box-shadow: var(--ngxt-badge-shadow, 0 4px 12px rgba(0, 0, 0, 0.15));
+        background: var(--ngrithms-badge-bg, #ffffff);
+        color: var(--ngrithms-badge-fg, #1f2937);
+        border: 1px solid var(--ngrithms-badge-border, rgba(0, 0, 0, 0.08));
+        border-radius: var(--ngrithms-badge-radius, 999px);
+        box-shadow: var(--ngrithms-badge-shadow, 0 4px 12px rgba(0, 0, 0, 0.15));
         cursor: pointer;
         transition: transform 120ms ease;
       }
-      .ngxt-consent-badge:hover {
+      .ngr-consent-badge:hover {
         transform: translateY(-1px);
       }
-      .ngxt-consent-badge[data-position='left-bottom'] {
-        left: var(--ngxt-badge-offset, 16px);
-        bottom: var(--ngxt-badge-offset, 16px);
+      .ngr-consent-badge[data-position='left-bottom'] {
+        left: var(--ngrithms-badge-offset, 16px);
+        bottom: var(--ngrithms-badge-offset, 16px);
       }
-      .ngxt-consent-badge[data-position='right-bottom'] {
-        right: var(--ngxt-badge-offset, 16px);
-        bottom: var(--ngxt-badge-offset, 16px);
+      .ngr-consent-badge[data-position='right-bottom'] {
+        right: var(--ngrithms-badge-offset, 16px);
+        bottom: var(--ngrithms-badge-offset, 16px);
       }
-      .ngxt-consent-badge[data-position='left-top'] {
-        left: var(--ngxt-badge-offset, 16px);
-        top: var(--ngxt-badge-offset, 16px);
+      .ngr-consent-badge[data-position='left-top'] {
+        left: var(--ngrithms-badge-offset, 16px);
+        top: var(--ngrithms-badge-offset, 16px);
       }
-      .ngxt-consent-badge[data-position='right-top'] {
-        right: var(--ngxt-badge-offset, 16px);
-        top: var(--ngxt-badge-offset, 16px);
+      .ngr-consent-badge[data-position='right-top'] {
+        right: var(--ngrithms-badge-offset, 16px);
+        top: var(--ngrithms-badge-offset, 16px);
       }
     `,
   ],

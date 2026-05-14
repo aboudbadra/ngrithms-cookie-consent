@@ -1,5 +1,5 @@
 {
-  "name": "@ngxt/cookie-consent",
+  "name": "@ngrithms/cookie-consent",
   "version": "0.1.0",
   "description": "Modern Angular cookie consent — standalone, signals, provideCookieConsent(), SSR-safe, zero dependencies.",
   "keywords": [
@@ -12,17 +12,17 @@
     "cookie-consent",
     "standalone",
     "signals",
-    "ngxt"
+    "ngrithms"
   ],
   "author": "Aboud Badra <albadra.aboud@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/aboudbadra/ngxt-cookie-consent",
+  "homepage": "https://github.com/aboudbadra/ngrithms-cookie-consent",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aboudbadra/ngxt-cookie-consent.git"
+    "url": "https://github.com/aboudbadra/ngrithms-cookie-consent.git"
   },
   "bugs": {
-    "url": "https://github.com/aboudbadra/ngxt-cookie-consent/issues"
+    "url": "https://github.com/aboudbadra/ngrithms-cookie-consent/issues"
   },
   "peerDependencies": {
     "@angular/common": ">=17.2.0 <22.0.0",

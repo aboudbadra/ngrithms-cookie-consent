@@ -1,37 +1,37 @@
-/* @ngxt/cookie-consent — dark theme. */
+/* @ngrithms/cookie-consent — dark theme. */
 :root {
-  --ngxt-banner-bg: #0f172a;
-  --ngxt-banner-fg: #e5e7eb;
-  --ngxt-banner-fg-muted: rgba(229, 231, 235, 0.7);
-  --ngxt-banner-border: rgba(255, 255, 255, 0.08);
-  --ngxt-banner-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --ngrithms-banner-bg: #0f172a;
+  --ngrithms-banner-fg: #e5e7eb;
+  --ngrithms-banner-fg-muted: rgba(229, 231, 235, 0.7);
+  --ngrithms-banner-border: rgba(255, 255, 255, 0.08);
+  --ngrithms-banner-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
-  --ngxt-modal-backdrop: rgba(0, 0, 0, 0.7);
-  --ngxt-modal-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  --ngrithms-modal-backdrop: rgba(0, 0, 0, 0.7);
+  --ngrithms-modal-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 
-  --ngxt-footer-bg: rgba(255, 255, 255, 0.03);
-  --ngxt-hover-bg: rgba(255, 255, 255, 0.08);
+  --ngrithms-footer-bg: rgba(255, 255, 255, 0.03);
+  --ngrithms-hover-bg: rgba(255, 255, 255, 0.08);
 
-  --ngxt-link: #93c5fd;
+  --ngrithms-link: #93c5fd;
 
-  --ngxt-btn-primary-bg: #ffffff;
-  --ngxt-btn-primary-bg-hover: #e5e7eb;
-  --ngxt-btn-primary-fg: #0f172a;
+  --ngrithms-btn-primary-bg: #ffffff;
+  --ngrithms-btn-primary-bg-hover: #e5e7eb;
+  --ngrithms-btn-primary-fg: #0f172a;
 
-  --ngxt-btn-secondary-bg: transparent;
-  --ngxt-btn-secondary-bg-hover: rgba(255, 255, 255, 0.06);
-  --ngxt-btn-secondary-fg: #e5e7eb;
-  --ngxt-btn-secondary-border: rgba(255, 255, 255, 0.2);
+  --ngrithms-btn-secondary-bg: transparent;
+  --ngrithms-btn-secondary-bg-hover: rgba(255, 255, 255, 0.06);
+  --ngrithms-btn-secondary-fg: #e5e7eb;
+  --ngrithms-btn-secondary-border: rgba(255, 255, 255, 0.2);
 
-  --ngxt-btn-ghost-fg: #93c5fd;
-  --ngxt-btn-ghost-fg-hover: #bfdbfe;
+  --ngrithms-btn-ghost-fg: #93c5fd;
+  --ngrithms-btn-ghost-fg-hover: #bfdbfe;
 
-  --ngxt-switch-on: #93c5fd;
-  --ngxt-switch-off: rgba(255, 255, 255, 0.2);
-  --ngxt-locked-fg: #4ade80;
+  --ngrithms-switch-on: #93c5fd;
+  --ngrithms-switch-off: rgba(255, 255, 255, 0.2);
+  --ngrithms-locked-fg: #4ade80;
 
-  --ngxt-badge-bg: #0f172a;
-  --ngxt-badge-fg: #e5e7eb;
-  --ngxt-badge-border: rgba(255, 255, 255, 0.1);
-  --ngxt-badge-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --ngrithms-badge-bg: #0f172a;
+  --ngrithms-badge-fg: #e5e7eb;
+  --ngrithms-badge-border: rgba(255, 255, 255, 0.1);
+  --ngrithms-badge-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }

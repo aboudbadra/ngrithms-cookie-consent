@@ -4,7 +4,7 @@ import { DEFAULT_CONFIG } from '../tokens/defaults';
 import { CookieConsentConfig } from '../types/config';
 
 /**
- * Functional setup for `@ngxt/cookie-consent`. Add to the `providers` array of
+ * Functional setup for `@ngrithms/cookie-consent`. Add to the `providers` array of
  * `bootstrapApplication()` (standalone) or your root `NgModule` (classic).
  *
  * @example

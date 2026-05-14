@@ -40,7 +40,7 @@ export const DEFAULT_CONFIG: Partial<CookieConsentConfig> = {
   badgePosition: 'left-bottom',
   position: 'bottom-bar',
   theme: 'default',
-  cookiePrefix: 'ngxt_consent_',
+  cookiePrefix: 'ngrithms_consent_',
   cookieExpiryDays: 365,
   showCookieDetails: true,
   hideDeny: false,

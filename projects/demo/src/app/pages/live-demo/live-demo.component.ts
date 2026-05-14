@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ConsentService, IfConsentDirective } from '@ngxt/cookie-consent';
+import { ConsentService, IfConsentDirective } from '@ngrithms/cookie-consent';
 
 @Component({
   selector: 'demo-live',
@@ -24,7 +24,7 @@ import { ConsentService, IfConsentDirective } from '@ngxt/cookie-consent';
         <div class="gate">
           <code>{{ key }}</code>
           <span>
-            <ng-container *ngxIfConsent="key; else off">✅ granted</ng-container>
+            <ng-container *ngrIfConsent="key; else off">✅ granted</ng-container>
             <ng-template #off>⛔ denied</ng-template>
           </span>
         </div>

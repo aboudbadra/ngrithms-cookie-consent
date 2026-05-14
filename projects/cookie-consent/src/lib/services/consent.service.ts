@@ -21,7 +21,7 @@ export class ConsentService {
   private readonly config = inject(COOKIE_CONSENT_CONFIG);
   private readonly cookies = inject(CookieService);
 
-  private readonly cookieName = `${this.config.cookiePrefix ?? 'ngxt_consent_'}state`;
+  private readonly cookieName = `${this.config.cookiePrefix ?? 'ngrithms_consent_'}state`;
 
   private readonly stateSignal = signal<ConsentState | null>(this.loadPersisted());
   private readonly bannerVisibleSignal = signal<boolean>(this.stateSignal() === null);

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@ngxt/cookie-consent` will be documented in this file.
+All notable changes to `@ngrithms/cookie-consent` will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -10,10 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Initial v0.1.0 release.
-- Standalone `<ngxt-consent-banner>`, `<ngxt-consent-modal>`, `<ngxt-consent-badge>` components.
+- Standalone `<ngr-consent-banner>`, `<ngr-consent-modal>`, `<ngr-consent-badge>` components.
 - `provideCookieConsent({...})` functional setup — no `forRoot()`, no NgModule.
 - Signal-based `ConsentService` with RxJS observable bridges.
-- `*ngxIfConsent` structural directive keyed on `CookieItem.key`.
+- `*ngrIfConsent` structural directive keyed on `CookieItem.key`.
 - Two-level user-defined consent model: `Category` → `CookieItem` → `CookieDetail`.
 - Preset categories: `ANALYTICS_PRESET`, `MARKETING_PRESET`, `FUNCTIONAL_PRESET`, `SOCIAL_PRESET`, `ADVERTISING_PRESET`.
 - Google Consent Mode v2 adapter.

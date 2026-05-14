@@ -1,19 +1,19 @@
 @if (visible()) {
   <div
-    class="ngxt-consent-banner"
+    class="ngr-consent-banner"
     [class]="config.customClass"
     [attr.data-position]="config.position"
     role="dialog"
     aria-modal="false"
     [attr.aria-label]="title()"
   >
-    <div class="ngxt-consent-banner__inner">
-      <div class="ngxt-consent-banner__content">
-        <h2 class="ngxt-consent-banner__title">{{ title() }}</h2>
-        <p class="ngxt-consent-banner__description">{{ description() }}</p>
+    <div class="ngr-consent-banner__inner">
+      <div class="ngr-consent-banner__content">
+        <h2 class="ngr-consent-banner__title">{{ title() }}</h2>
+        <p class="ngr-consent-banner__description">{{ description() }}</p>
 
         @if (!config.hideImprint || privacyPolicyUrl()) {
-          <p class="ngxt-consent-banner__footer">
+          <p class="ngr-consent-banner__footer">
             @if (privacyPolicyUrl(); as url) {
               <a [href]="url" target="_blank" rel="noopener">{{ privacyPolicyLabel() }}</a>
             }
@@ -24,9 +24,9 @@
         }
       </div>
 
-      <div class="ngxt-consent-banner__actions">
+      <div class="ngr-consent-banner__actions">
         @if (config.showLanguageSwitcher && languages().length > 1) {
-          <div class="ngxt-consent-banner__lang">
+          <div class="ngr-consent-banner__lang">
             <label [attr.aria-label]="languageSwitcherLabel()">
               <select
                 (change)="setLanguage($any($event.target).value)"
@@ -42,7 +42,7 @@
 
         <button
           type="button"
-          class="ngxt-consent-banner__btn ngxt-consent-banner__btn--ghost"
+          class="ngr-consent-banner__btn ngr-consent-banner__btn--ghost"
           (click)="customize()"
         >
           {{ customizeLabel() }}
@@ -51,7 +51,7 @@
         @if (!config.hideDeny) {
           <button
             type="button"
-            class="ngxt-consent-banner__btn ngxt-consent-banner__btn--secondary"
+            class="ngr-consent-banner__btn ngr-consent-banner__btn--secondary"
             (click)="denyAll()"
           >
             {{ denyAllLabel() }}
@@ -60,7 +60,7 @@
 
         <button
           type="button"
-          class="ngxt-consent-banner__btn ngxt-consent-banner__btn--primary"
+          class="ngr-consent-banner__btn ngr-consent-banner__btn--primary"
           (click)="acceptAll()"
         >
           {{ acceptAllLabel() }}
@@ -70,4 +70,4 @@
   </div>
 }
 
-<ngxt-consent-modal></ngxt-consent-modal>
+<ngr-consent-modal></ngr-consent-modal>
