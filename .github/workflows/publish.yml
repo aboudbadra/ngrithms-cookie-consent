@@ -27,7 +27,21 @@ jobs:
       - name: Build library
         run: npm run build:lib
 
+      - name: Check if version is already on npm
+        id: check
+        working-directory: dist/cookie-consent
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$NAME@$VERSION" version > /dev/null 2>&1; then
+            echo "Already published — skipping publish step."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish
+        if: steps.check.outputs.skip != 'true'
         run: npm publish --access public --provenance
         working-directory: dist/cookie-consent
         env:
