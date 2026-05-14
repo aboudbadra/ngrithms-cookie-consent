@@ -1,0 +1,77 @@
+/* Default theme for the consent UI. Swap to a different file (dark, minimal, rounded) or remove for headless. */
+@import '@ngxt/cookie-consent/themes/default.css';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Demo-specific helpers used across pages */
+.demo-section {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.demo-section h2 {
+  margin-top: 0;
+}
+
+.demo-section pre {
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.demo-section code {
+  font-family: 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.demo-btn {
+  font: inherit;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.demo-btn:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.demo-btn--primary {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.demo-btn--primary:hover {
+  background: #000;
+}
+
+h1.demo-title {
+  margin: 0 0 6px;
+}
+
+p.demo-subtitle {
+  margin: 0 0 24px;
+  color: rgba(31, 41, 55, 0.7);
+}

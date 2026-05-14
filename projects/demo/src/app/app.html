@@ -1,0 +1,32 @@
+<div class="layout">
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" routerLink="/">
+        <span class="brand__mark">@ngxt</span>
+        <span class="brand__name">/cookie-consent</span>
+      </a>
+      <nav class="nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/live-demo" routerLinkActive="active">Live demo</a>
+        <a routerLink="/theming" routerLinkActive="active">Theming</a>
+        <a routerLink="/headless" routerLinkActive="active">Headless</a>
+        <a routerLink="/ga-consent-mode" routerLinkActive="active">GA Consent Mode</a>
+      </nav>
+      <a
+        class="github"
+        href="https://github.com/aboudbadra/ngxt-cookie-consent"
+        target="_blank"
+        rel="noopener"
+      >
+        GitHub →
+      </a>
+    </div>
+  </header>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <ngxt-consent-banner></ngxt-consent-banner>
+  <ngxt-consent-badge></ngxt-consent-badge>
+</div>

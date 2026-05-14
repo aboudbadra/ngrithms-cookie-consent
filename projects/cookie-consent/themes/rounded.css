@@ -1,0 +1,13 @@
+/* @ngxt/cookie-consent — rounded theme. Pill buttons, soft radii. */
+:root {
+  --ngxt-banner-radius: 20px;
+  --ngxt-banner-padding: 24px 28px;
+  --ngxt-banner-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+  --ngxt-btn-radius: 999px;
+  --ngxt-btn-padding: 10px 20px;
+
+  --ngxt-item-radius: 16px;
+  --ngxt-badge-radius: 999px;
+  --ngxt-badge-size: 56px;
+}

@@ -1,0 +1,73 @@
+@if (visible()) {
+  <div
+    class="ngxt-consent-banner"
+    [class]="config.customClass"
+    [attr.data-position]="config.position"
+    role="dialog"
+    aria-modal="false"
+    [attr.aria-label]="title()"
+  >
+    <div class="ngxt-consent-banner__inner">
+      <div class="ngxt-consent-banner__content">
+        <h2 class="ngxt-consent-banner__title">{{ title() }}</h2>
+        <p class="ngxt-consent-banner__description">{{ description() }}</p>
+
+        @if (!config.hideImprint || privacyPolicyUrl()) {
+          <p class="ngxt-consent-banner__footer">
+            @if (privacyPolicyUrl(); as url) {
+              <a [href]="url" target="_blank" rel="noopener">{{ privacyPolicyLabel() }}</a>
+            }
+            @if (!config.hideImprint && imprintUrl(); as url) {
+              <a [href]="url" target="_blank" rel="noopener">{{ imprintLabel() }}</a>
+            }
+          </p>
+        }
+      </div>
+
+      <div class="ngxt-consent-banner__actions">
+        @if (config.showLanguageSwitcher && languages().length > 1) {
+          <div class="ngxt-consent-banner__lang">
+            <label [attr.aria-label]="languageSwitcherLabel()">
+              <select
+                (change)="setLanguage($any($event.target).value)"
+                [value]="currentLanguage()"
+              >
+                @for (code of languages(); track code) {
+                  <option [value]="code">{{ getLanguagePack(code)?.languageName ?? code }}</option>
+                }
+              </select>
+            </label>
+          </div>
+        }
+
+        <button
+          type="button"
+          class="ngxt-consent-banner__btn ngxt-consent-banner__btn--ghost"
+          (click)="customize()"
+        >
+          {{ customizeLabel() }}
+        </button>
+
+        @if (!config.hideDeny) {
+          <button
+            type="button"
+            class="ngxt-consent-banner__btn ngxt-consent-banner__btn--secondary"
+            (click)="denyAll()"
+          >
+            {{ denyAllLabel() }}
+          </button>
+        }
+
+        <button
+          type="button"
+          class="ngxt-consent-banner__btn ngxt-consent-banner__btn--primary"
+          (click)="acceptAll()"
+        >
+          {{ acceptAllLabel() }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<ngxt-consent-modal></ngxt-consent-modal>

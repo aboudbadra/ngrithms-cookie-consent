@@ -1,0 +1,42 @@
+{
+  "name": "@ngxt/cookie-consent",
+  "version": "0.1.0",
+  "description": "Modern Angular cookie consent — standalone, signals, provideCookieConsent(), SSR-safe, zero dependencies.",
+  "keywords": [
+    "angular",
+    "cookie",
+    "consent",
+    "gdpr",
+    "ccpa",
+    "cookie-banner",
+    "cookie-consent",
+    "standalone",
+    "signals",
+    "ngxt"
+  ],
+  "author": "Aboud Badra <albadra.aboud@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/aboudbadra/ngxt-cookie-consent",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aboudbadra/ngxt-cookie-consent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aboudbadra/ngxt-cookie-consent/issues"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=17.2.0 <22.0.0",
+    "@angular/core": ">=17.2.0 <22.0.0",
+    "rxjs": ">=7.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "exports": {
+    "./themes/default.css": "./themes/default.css",
+    "./themes/dark.css": "./themes/dark.css",
+    "./themes/minimal.css": "./themes/minimal.css",
+    "./themes/rounded.css": "./themes/rounded.css"
+  }
+}
