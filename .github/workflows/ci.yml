@@ -19,6 +19,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Test library
+        run: npm test
+
       - name: Build library
         run: npm run build:lib
 

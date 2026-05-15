@@ -21,6 +21,12 @@ export interface ScriptLoadOptions {
  * Defers third-party `<script>` injection until the user grants consent for a given
  * `CookieItem`. Safe to call during SSR — does nothing on the server.
  *
+ * Behaviour follows the consent signal in both directions: granting consent injects the
+ * script, revoking consent removes the `<script>` element from the DOM. Note that
+ * removing the element does not undo any side effects the script has already had on
+ * `window` — for libraries that install globals (analytics SDKs, etc.), a page reload is
+ * still needed to fully unwind them. Re-granting after a revoke re-injects.
+ *
  * @example
  * scriptLoader.load({
  *   itemKey: 'google_analytics',
@@ -36,21 +42,24 @@ export class ScriptLoaderService {
   private readonly consent = inject(ConsentService);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
-  private readonly loaded = new Set<string>();
+  private readonly injected = new Map<string, HTMLScriptElement>();
   private readonly subscriptions = new Set<Subscription>();
 
   load(options: ScriptLoadOptions): void {
     if (!this.isBrowser) return;
     const dedupeKey = options.src ?? options.inline ?? options.itemKey;
     const sub = this.consent.item$(options.itemKey).subscribe((granted) => {
-      if (granted && !this.loaded.has(dedupeKey)) {
-        this.inject(options, dedupeKey);
+      if (granted) {
+        this.ensureInjected(options, dedupeKey);
+      } else {
+        this.ensureRemoved(dedupeKey);
       }
     });
     this.subscriptions.add(sub);
   }
 
-  private inject(options: ScriptLoadOptions, dedupeKey: string): void {
+  private ensureInjected(options: ScriptLoadOptions, dedupeKey: string): void {
+    if (this.injected.has(dedupeKey)) return;
     const script = this.document.createElement('script');
     if (options.src) script.src = options.src;
     if (options.inline) script.text = options.inline;
@@ -62,6 +71,13 @@ export class ScriptLoaderService {
     }
     if (options.onLoad) script.addEventListener('load', options.onLoad);
     this.document.head.appendChild(script);
-    this.loaded.add(dedupeKey);
+    this.injected.set(dedupeKey, script);
+  }
+
+  private ensureRemoved(dedupeKey: string): void {
+    const script = this.injected.get(dedupeKey);
+    if (!script) return;
+    script.parentNode?.removeChild(script);
+    this.injected.delete(dedupeKey);
   }
 }

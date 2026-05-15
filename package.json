@@ -1,6 +1,6 @@
 {
   "name": "ngrithms-cookie-consent",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "scripts": {
     "ng": "ng",
     "start:demo": "ng serve demo",
@@ -9,7 +9,7 @@
     "build:lib:watch": "ng build cookie-consent --watch --configuration development",
     "build:demo": "ng build demo",
     "build": "npm run build:lib && npm run build:demo",
-    "test": "ng test",
+    "test": "ng test cookie-consent --watch=false",
     "pack:lib": "npm run build:lib && cd dist/cookie-consent && npm pack",
     "release:patch": "npm --prefix projects/cookie-consent version patch --no-git-tag-version && npm version patch --no-git-tag-version --allow-same-version",
     "release:minor": "npm --prefix projects/cookie-consent version minor --no-git-tag-version && npm version minor --no-git-tag-version --allow-same-version",

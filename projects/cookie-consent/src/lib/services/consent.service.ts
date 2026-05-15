@@ -1,4 +1,12 @@
-import { Injectable, Signal, computed, inject, signal } from '@angular/core';
+import {
+  Injectable,
+  Injector,
+  Signal,
+  computed,
+  inject,
+  runInInjectionContext,
+  signal,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CookieService } from './cookie.service';
@@ -20,6 +28,7 @@ import { CookieItem } from '../types/cookie-item';
 export class ConsentService {
   private readonly config = inject(COOKIE_CONSENT_CONFIG);
   private readonly cookies = inject(CookieService);
+  private readonly injector = inject(Injector);
 
   private readonly cookieName = `${this.config.cookiePrefix ?? 'ngrithms_consent_'}state`;
 
@@ -54,7 +63,12 @@ export class ConsentService {
 
   /** Observable per-item consent check, for RxJS-flavoured consumers. */
   item$(itemKey: string): Observable<boolean> {
-    return toObservable(this.isGranted(itemKey));
+    // `toObservable` requires an active injection context. Wrap it so callers can invoke
+    // `item$()` from anywhere (component methods, services, event handlers) — not just
+    // from constructors / field initializers.
+    return runInInjectionContext(this.injector, () =>
+      toObservable(this.isGranted(itemKey)),
+    );
   }
 
   /** Accept all items in the given list (plus essential implicit). */
