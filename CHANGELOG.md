@@ -5,6 +5,17 @@ All notable changes to `@ngrithms/cookie-consent` will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] — 2026-05-15
+
+### Documentation
+
+- Restructured the library README around a four-pattern integration model (structural directive, script loader, reactive state, Google Consent Mode v2) — makes it explicit that the library only tracks consent state and the consumer is responsible for the actual side effects (loading SDKs, mounting iframes, gating in-app code) via shared `CookieItem.key`s.
+- New "How it works" section up top with the four-pattern overview table.
+- New "Customizing text" section documenting all 16 overridable translation keys (`banner.title`, `banner.accept_all`, `banner.deny_all`, `banner.customize`, `banner.save_preferences`, `banner.show_details`, `banner.hide_details`, `badge.open`, `footer.privacy_policy`, `footer.imprint`, `modal.locked`, `modal.cookie.{name,provider,purpose,duration}`, `banner.description`) — previously undocumented and only discoverable by grepping the bundle. Includes worked examples for overriding the built-in `en` pack, adding a new language with fallback, and per-language URLs via `TranslatableString`.
+- Fixed the **Quick start** to match the modern Angular CLI scaffold (`ng new` on Angular 17+): config now lives in `app.config.ts` via `ApplicationConfig` rather than inlined into `bootstrapApplication` in `main.ts`. Also added the previously-missing `app.component.ts` snippet showing that `ConsentBannerComponent`, `ConsentBadgeComponent`, and `IfConsentDirective` must be added to the host component's `imports: []` for the elements and `*ngrIfConsent` to resolve — copy-pasting the old quick start produced "is not a known element" / "Can't bind to 'ngrIfConsent'" errors in fresh projects.
+- Reordered sections so the configuration reference table moves to the bottom (as a lookup) and the integration patterns + customization sections sit above it (as the discovery path).
+- No code changes.
+
 ## [0.3.0] — 2026-05-15
 
 ### Added
