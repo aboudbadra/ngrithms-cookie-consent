@@ -16,6 +16,7 @@ Modern Angular cookie consent — **standalone components**, **signal-based stat
 - ✅ Preset category constants (`ANALYTICS_PRESET`, `MARKETING_PRESET`, ...) — spread them in or use as templates
 - ✅ First-class Google Consent Mode v2 adapter
 - ✅ Built-in i18n (`en`, `fr`) + custom-language API with icon path + fallback
+- ✅ Fully customizable copy via translation keys — no markup forks needed
 - ✅ Optional CSS theme presets — or go headless and style it yourself
 - ✅ SSR-safe out of the box
 - ✅ Zero runtime dependencies
@@ -43,6 +44,20 @@ bootstrapApplication(App, {
     }),
   ],
 });
+```
+
+```ts
+// src/app/app.component.ts — import the standalone components & directive
+import { Component } from '@angular/core';
+import { ConsentBannerComponent, ConsentBadgeComponent, IfConsentDirective } from '@ngrithms/cookie-consent';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ConsentBannerComponent, ConsentBadgeComponent, IfConsentDirective],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {}
 ```
 
 ```html

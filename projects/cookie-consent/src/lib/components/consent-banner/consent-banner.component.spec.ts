@@ -126,6 +126,26 @@ describe('ConsentBannerComponent', () => {
     expect(options.map((o) => o.value)).toEqual(['en', 'fr']);
   });
 
+  it('reflects the active language as the selected option (even after a programmatic switch)', async () => {
+    const { fixture, i18n } = setup({
+      availableLanguages: ['en', 'fr'],
+      defaultLanguage: 'en',
+      showLanguageSwitcher: true,
+    });
+    let options = Array.from(
+      root(fixture).querySelectorAll('.ngr-consent-banner__lang option'),
+    ) as HTMLOptionElement[];
+    expect(options.find((o) => o.selected)?.value).toBe('en');
+
+    i18n.setLanguage('fr');
+    await fixture.whenStable();
+    fixture.detectChanges();
+    options = Array.from(
+      root(fixture).querySelectorAll('.ngr-consent-banner__lang option'),
+    ) as HTMLOptionElement[];
+    expect(options.find((o) => o.selected)?.value).toBe('fr');
+  });
+
   it('does not render a language switcher with only one language', () => {
     const { fixture } = setup({
       availableLanguages: ['en'],

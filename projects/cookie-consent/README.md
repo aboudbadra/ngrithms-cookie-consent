@@ -335,6 +335,75 @@ provideCookieConsent({
 });
 ```
 
+## Recipes
+
+### Hide the "Reject all" button
+
+```ts
+provideCookieConsent({
+  categories: [...],
+  hideDeny: true,
+});
+```
+
+Only `Customize` and `Accept all` remain in the banner action row. Note: hiding the reject button is **legally contentious under GDPR** — many DPAs (notably France's CNIL) hold that "Reject all" must be at least as visually prominent as "Accept all." Use with care.
+
+### Style the "Customize" button as an outline button
+
+By default `Customize` renders as a borderless link-style "ghost" button. Give it a border so it visually matches `Reject all`:
+
+```css
+:root {
+  --ngrithms-btn-ghost-bg: transparent;
+  --ngrithms-btn-ghost-fg: #1f2937;
+  --ngrithms-btn-ghost-border: rgba(0, 0, 0, 0.16);
+  --ngrithms-btn-ghost-bg-hover: rgba(0, 0, 0, 0.04);
+  --ngrithms-btn-ghost-border-hover: rgba(0, 0, 0, 0.24);
+  --ngrithms-btn-ghost-text-decoration-hover: none;
+}
+```
+
+The full ghost-button surface: `--ngrithms-btn-ghost-bg`, `-fg`, `-border`, `-bg-hover`, `-fg-hover`, `-border-hover`, `-padding-inline`, `-text-decoration-hover`. All default to the current borderless link styling, so adding these only takes effect if you set them.
+
+### Drive the banner language from your app's own switcher
+
+If your app already has a language switcher in its navbar, you can suppress the banner's built-in switcher and let your nav drive the banner instead. `LanguageService.setLanguage(code)` is public — call it from your nav's change handler:
+
+```ts
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '@ngrithms/cookie-consent';
+
+@Component({
+  selector: 'app-nav',
+  template: `
+    <select (change)="onLangChange($any($event.target).value)">
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+  `,
+})
+export class NavComponent {
+  private readonly i18n = inject(LanguageService);
+
+  onLangChange(code: string): void {
+    this.i18n.setLanguage(code);
+    // ...plus whatever else your app does on language change.
+  }
+}
+```
+
+Then hide the banner's built-in switcher (the `availableLanguages` list is still needed so the library knows which packs are valid):
+
+```ts
+provideCookieConsent({
+  categories: [...],
+  availableLanguages: ['en', 'fr'],
+  showLanguageSwitcher: false,
+});
+```
+
+`LanguageService` also exposes `currentLanguage()` (signal) and `currentLanguage$` (observable) if your app needs to react to language changes the other way — e.g., to sync the nav back to a language change made elsewhere.
+
 ## Themes
 
 Pick one and import in your global stylesheet:

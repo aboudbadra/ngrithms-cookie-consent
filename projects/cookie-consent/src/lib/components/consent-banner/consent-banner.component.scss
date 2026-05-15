@@ -139,13 +139,15 @@
 }
 
 .ngr-consent-banner__btn--ghost {
-  background: transparent;
+  background: var(--ngrithms-btn-ghost-bg, transparent);
   color: var(--ngrithms-btn-ghost-fg, #2563eb);
-  border-color: transparent;
-  padding-inline: 8px;
+  border-color: var(--ngrithms-btn-ghost-border, transparent);
+  padding-inline: var(--ngrithms-btn-ghost-padding-inline, 8px);
 }
 
 .ngr-consent-banner__btn--ghost:hover {
+  background: var(--ngrithms-btn-ghost-bg-hover, transparent);
   color: var(--ngrithms-btn-ghost-fg-hover, #1d4ed8);
-  text-decoration: underline;
+  border-color: var(--ngrithms-btn-ghost-border-hover, transparent);
+  text-decoration: var(--ngrithms-btn-ghost-text-decoration-hover, underline);
 }

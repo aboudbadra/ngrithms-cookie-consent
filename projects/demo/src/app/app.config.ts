@@ -18,11 +18,25 @@ export const appConfig: ApplicationConfig = {
       privacyPolicyUrl: 'https://example.com/privacy',
       imprintUrl: 'https://example.com/imprint',
       defaultLanguage: 'en',
-      availableLanguages: ['en', 'fr'],
+      // 'brand-en' is registered here so the language switcher can reflect it as the active
+      // language when the Theming page's "Brand makeover" toggle activates it. Otherwise the
+      // banner's <select> would render empty (no matching <option>) whenever 'brand-en' was
+      // active.
+      availableLanguages: ['en', 'fr', 'brand-en'],
       showLanguageSwitcher: true,
       position: 'bottom-bar',
       theme: 'default',
       categories: [ANALYTICS_PRESET, MARKETING_PRESET, FUNCTIONAL_PRESET, SOCIAL_PRESET],
+      customLanguages: {
+        'brand-en': {
+          languageKey: 'brand-en',
+          languageName: 'Brand (English)',
+          fallback: 'en',
+          translations: {
+            'banner.customize': 'Settings',
+          },
+        },
+      },
     }),
   ],
 };

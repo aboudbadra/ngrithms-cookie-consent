@@ -5,6 +5,27 @@ All notable changes to `@ngrithms/cookie-consent` will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-05-15
+
+### Added
+
+- **8 new CSS custom properties for the "Customize" (ghost) button** — `--ngrithms-btn-ghost-bg`, `--ngrithms-btn-ghost-border`, `--ngrithms-btn-ghost-bg-hover`, `--ngrithms-btn-ghost-border-hover`, `--ngrithms-btn-ghost-padding-inline`, `--ngrithms-btn-ghost-text-decoration-hover`. All defaults match the prior hardcoded values (transparent bg/border, underline-on-hover), so existing apps see no visual change. Set these to give the "Customize" button a border that matches "Reject all" — see the new README recipe.
+- **New `--ngrithms-badge-icon-fill` CSS custom property** for fine-grained control over the floating badge's icon color, separate from the badge's text color (`--ngrithms-badge-fg`). Defaults to `currentColor`.
+- **New "Recipes" section in the lib README** with worked examples for the three most-asked customizations: hiding the "Reject all" button (with a GDPR caveat), styling "Customize" as an outline button, and driving the banner's language from the host app's own switcher via `LanguageService.setLanguage()`.
+
+### Fixed
+
+- **Banner language switcher now reflects the active language when changed programmatically.** Previously the `<select>` used Angular's `[value]="currentLanguage()"` binding which is unreliable on `<select>` elements without `FormsModule` — if the value was set before `<option>` elements rendered, the browser silently fell back to the first option. Symptom: after calling `LanguageService.setLanguage('fr')`, the dropdown still showed the first language as selected while the rest of the banner correctly updated to French. Fixed by moving the binding to `[selected]="code === currentLanguage()"` on each `<option>`. Affects anyone using `setLanguage()` from outside the banner (e.g. driving the language from a host-app switcher per the README recipe).
+
+### Changed
+
+- **Floating consent badge now uses a properly-rendered detailed cookie icon.** The previous icon had the chocolate-chip dots encoded in the SVG path but rendered them as a solid filled blob (no `fill-rule="evenodd"`), so at the badge's 20px size it looked like a generic dark circle. The new icon — a cookie with a bite mark and clearly-visible chocolate chips — renders correctly. Existing apps will see the floating opener look subtly different (better) after upgrading.
+
+### Demo
+
+- Refreshed the demo's **Home page Quick start** to match the v0.3.1 README pattern (4 code blocks: `app.config.ts`, `app.component.ts`, `app.component.html`, `styles.css`) — the previous quick start showed the deprecated inline-`bootstrapApplication` pattern that doesn't match what `ng new` scaffolds on Angular 17+. Home page also gains a "How it works" section listing the four wiring patterns.
+- Refreshed the **Theming page** with a new "CSS variables reference" section (grouped tables for banner / buttons / badge / switches, including the 8 new ghost-button vars and the new `--ngrithms-badge-icon-fill`) and a new "Recipe: outline-style Customize button" with a live toggle that flips the new ghost-button vars on the real banner so you can see the effect immediately.
+
 ## [0.3.1] — 2026-05-15
 
 ### Documentation

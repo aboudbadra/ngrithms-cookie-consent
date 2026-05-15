@@ -28,12 +28,11 @@
         @if (config.showLanguageSwitcher && languages().length > 1) {
           <div class="ngr-consent-banner__lang">
             <label [attr.aria-label]="languageSwitcherLabel()">
-              <select
-                (change)="setLanguage($any($event.target).value)"
-                [value]="currentLanguage()"
-              >
+              <select (change)="setLanguage($any($event.target).value)">
                 @for (code of languages(); track code) {
-                  <option [value]="code">{{ getLanguagePack(code)?.languageName ?? code }}</option>
+                  <option [value]="code" [selected]="code === currentLanguage()">
+                    {{ getLanguagePack(code)?.languageName ?? code }}
+                  </option>
                 }
               </select>
             </label>

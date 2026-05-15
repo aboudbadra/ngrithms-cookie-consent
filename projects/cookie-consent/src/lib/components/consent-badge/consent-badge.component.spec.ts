@@ -98,4 +98,18 @@ describe('ConsentBadgeComponent', () => {
     fixture.detectChanges();
     expect(badge(fixture)!.getAttribute('data-position')).toBe('right-top');
   });
+
+  it('renders the detailed cookie SVG inside the badge', async () => {
+    const { fixture, consent } = setup();
+    consent.acceptAll();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const svg = badge(fixture)!.querySelector('svg');
+    expect(svg).not.toBeNull();
+    expect(svg!.getAttribute('viewBox')).toBe('0 0 120.23 122.88');
+    const path = svg!.querySelector('path');
+    expect(path).not.toBeNull();
+    expect(path!.getAttribute('fill-rule')).toBe('evenodd');
+    expect(path!.getAttribute('fill')).toContain('--ngrithms-badge-icon-fill');
+  });
 });
