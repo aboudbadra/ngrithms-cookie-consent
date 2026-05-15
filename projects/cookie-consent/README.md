@@ -81,7 +81,9 @@ bootstrapApplication(App, {
 | `hideImprint` | `boolean` | `false` | Hide the imprint link |
 | `customClass` / `customOpenerClass` | `string` | — | BYO styling hooks |
 | `excludeRoutes` | `string[]` | `[]` | Routes on which the banner is suppressed |
-| `version` | `number` | `1` | Bump to force re-prompt |
+| `version` | `number` | `1` | Bump to force re-prompt without changing storage shape |
+| `schemaVersion` | `number` | `1` | Bump when you rename a `CookieItem.key` or change persisted-state semantics. Triggers `migrate` on read |
+| `migrate` | `(stored: unknown) => ConsentState \| null` | — | Called when stored `schemaVersion` ≠ `config.schemaVersion`. Return migrated state or `null` to re-prompt |
 
 ## Consent data model
 
@@ -108,6 +110,53 @@ provideCookieConsent({
   ],
 });
 ```
+
+## Gating content with `*ngrIfConsent`
+
+```html
+<!-- Only render when consent for this CookieItem is granted -->
+<div *ngrIfConsent="'google_analytics'">
+  <iframe src="https://www.googletagmanager.com/..."></iframe>
+</div>
+
+<!-- Optional fallback template when consent is missing -->
+<div *ngrIfConsent="'google_analytics'; else placeholder">
+  <iframe src="..."></iframe>
+</div>
+<ng-template #placeholder>
+  Enable analytics in <a href="#" (click)="consent.open()">cookie preferences</a> to see this content.
+</ng-template>
+```
+
+## Deferring `<script>` tags until consent
+
+`ScriptLoaderService` injects a `<script>` element when consent for an item is granted, **removes it when consent is revoked**, and re-injects on re-grant. It is SSR-safe (no-op on the server).
+
+> Removing the element does not undo side effects the script already had on `window`. Analytics SDKs that installed globals stay installed until page reload — for those, pair this with `applyGoogleConsentMode` (below) to gate runtime behavior on top of script presence.
+
+```ts
+import { inject } from '@angular/core';
+import { ScriptLoaderService } from '@ngrithms/cookie-consent';
+
+const loader = inject(ScriptLoaderService);
+
+loader.load({
+  itemKey: 'google_analytics',
+  src: 'https://www.googletagmanager.com/gtag/js?id=G-XXXXX',
+  attrs: { async: true },
+  onLoad: () => {
+    (window as any).dataLayer ??= [];
+  },
+});
+```
+
+| Option | Type | Notes |
+|---|---|---|
+| `itemKey` | `string` | `CookieItem.key` that must be granted before injection |
+| `src` | `string` | External script URL |
+| `inline` | `string` | Inline script body (used when `src` is omitted) |
+| `attrs` | `Record<string, string \| boolean>` | `<script>` attributes; `true` sets the attribute with no value, `false` omits |
+| `onLoad` | `() => void` | Fires once the external script reports `load` |
 
 ## Google Consent Mode v2
 
@@ -173,9 +222,39 @@ Or override individual CSS custom properties yourself — every visual aspect is
 
 For full headless control set `theme: 'none'` and style the semantic class names (`.ngr-consent-banner`, `.ngr-consent-modal__switch`, etc.) yourself.
 
+## Migrating persisted state across key renames
+
+`version` forces a re-prompt without touching the stored shape. `schemaVersion` is for when the *shape* changes — you renamed a `CookieItem.key`, restructured `granted`, or otherwise made old data ambiguous. Bump it and provide a `migrate` hook to translate forward instead of dropping users' decisions on the floor.
+
+```ts
+provideCookieConsent({
+  categories: [...],
+  schemaVersion: 2,
+  migrate: (stored) => {
+    const old = stored as {
+      granted: Record<string, boolean>;
+      timestamp: number;
+      version: number;
+    };
+    // v1 used "ga"; v2 standardised on "google_analytics".
+    const granted = { ...old.granted };
+    granted['google_analytics'] = granted['ga'] === true;
+    delete granted['ga'];
+    return {
+      granted,
+      timestamp: old.timestamp,
+      version: old.version,
+      schemaVersion: 2,
+    };
+  },
+});
+```
+
+Return `null` from `migrate` to discard the stored data and re-prompt the user. Stored cookies written before this library introduced `schemaVersion` (i.e. by 0.1.x) are treated as schema `1` automatically — no migration needed for that upgrade.
+
 ## SSR
 
-All DOM access is guarded by `isPlatformBrowser`. The library works under `provideServerRendering()` and `@angular/ssr` without configuration.
+All DOM access is guarded by `isPlatformBrowser`. The library works under `provideServerRendering()` and `@angular/ssr` without configuration. `ConsentService.item$()` is callable from any context — it captures an `Injector` internally and runs `toObservable` inside `runInInjectionContext`, so calling it from event handlers, lifecycle methods, or arbitrary service code does not require an active injection context.
 
 ## License
 

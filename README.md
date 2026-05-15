@@ -62,15 +62,38 @@ bootstrapApplication(App, {
 
 ## Documentation
 
-Full API reference and live examples: **[demo app](./projects/demo)**.
+Full API reference, configuration options, recipes (Google Consent Mode v2, custom themes, headless mode, SSR, schema migration), and details on `ScriptLoaderService` / `*ngrIfConsent` / the reactive `ConsentService` API live in the published library README:
+
+- **[Library README](./projects/cookie-consent/README.md)** — the canonical API surface (also shipped to npm)
+- **[Demo app](./projects/demo)** — runnable showcase: `npm run start:demo`
+- **[Changelog](./CHANGELOG.md)**
+
+## Repository layout
+
+```
+projects/
+  cookie-consent/   # the published library (@ngrithms/cookie-consent)
+  demo/             # consumer app used as a live showcase
+```
 
 ## Development
 
 ```bash
 npm install
-npm run build:lib       # ng build cookie-consent
+npm test                # vitest, 117 unit specs, ~3s
+npm run build:lib       # ng build cookie-consent → dist/cookie-consent
 npm run start:demo      # ng serve demo
 ```
+
+`npm test` runs the library suite (vitest under jsdom via `@angular/build:unit-test`). CI also runs `npm test` on every push and pull request.
+
+## Releasing
+
+1. Update `CHANGELOG.md` — move `[Unreleased]` to the new version + date.
+2. `npm run release:patch | release:minor | release:major` — bumps `projects/cookie-consent/package.json` **and** the workspace `package.json`. No git tag or publish is created.
+3. `npm run build:lib`
+4. `cd dist/cookie-consent && npm publish --access public`
+5. Commit, tag `vX.Y.Z`, push branch + tag.
 
 ## License
 

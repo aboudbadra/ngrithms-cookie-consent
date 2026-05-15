@@ -78,4 +78,32 @@ export interface CookieConsentConfig {
    * Default: `1`.
    */
   version?: number;
+
+  /**
+   * Storage schema version. Bump when you **rename a `CookieItem.key`** or otherwise
+   * change how persisted state should be interpreted. Different from `version`, which
+   * forces a re-prompt without changing the storage shape. Default: `1`.
+   *
+   * On read, a stored state whose `schemaVersion` doesn't match this value is routed
+   * through `migrate` (if configured); otherwise it's discarded and the user is
+   * re-prompted.
+   */
+  schemaVersion?: number;
+
+  /**
+   * Optional migration hook. Called when persisted state's `schemaVersion` doesn't
+   * match `config.schemaVersion`. Receives the raw stored object and must return either
+   * a valid `ConsentState` (which will be adopted) or `null` (which discards the data
+   * and re-prompts the user).
+   *
+   * @example
+   * migrate: (stored) => {
+   *   const old = stored as { granted: Record<string, boolean> };
+   *   // v1 used "ga", v2 uses "google_analytics"
+   *   const granted = { ...old.granted, google_analytics: old.granted['ga'] === true };
+   *   delete granted['ga'];
+   *   return { granted, timestamp: Date.now(), version: 1, schemaVersion: 2 };
+   * }
+   */
+  migrate?: (stored: unknown) => import('./consent-state').ConsentState | null;
 }

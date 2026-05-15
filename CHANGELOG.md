@@ -5,6 +5,14 @@ All notable changes to `@ngrithms/cookie-consent` will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-05-15
+
+### Added
+
+- **Persisted-state schema versioning.** New `config.schemaVersion` (default `1`) is stamped onto every cookie write. New `config.migrate(stored)` hook is called when stored `schemaVersion` doesn't match `config.schemaVersion` — return a `ConsentState` to adopt the migrated data, or `null` to discard and re-prompt. Distinct from `config.version`, which forces a re-prompt without changing the storage shape. Backward-compatible: cookies written by 0.1.x and 0.2.x (no `schemaVersion`) are treated as schema `1`.
+- Significantly expanded library README — added sections for `*ngrIfConsent` (with `else` template), `ScriptLoaderService` (config table + caveat about persisted `window` side effects), Google Consent Mode v2 recipe, and a `schemaVersion` migration walkthrough. Workspace README now points at the lib README as the canonical API surface, plus a repository-layout / development / release section.
+- 8 new tests for schema-version pathways (write stamps version, accept legacy 0.1.x cookies, discard on mismatch without migrate, run migrate + adopt result, discard when migrate returns null, prompt-version still enforced after migrate, malformed non-object data is safely rejected).
+
 ## [0.2.0] — 2026-05-15
 
 ### Added

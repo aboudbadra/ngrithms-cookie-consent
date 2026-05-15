@@ -252,6 +252,115 @@ describe('ConsentService', () => {
     });
   });
 
+  describe('schemaVersion + migrate', () => {
+    it('stamps schemaVersion on commit (defaults to 1)', () => {
+      const { service, doc } = setup();
+      service.acceptAll();
+      const raw = decodeURIComponent(doc.cookie.split('=').slice(1).join('=').split(';')[0]);
+      const parsed = JSON.parse(raw) as ConsentState;
+      expect(parsed.schemaVersion).toBe(1);
+    });
+
+    it('stamps a user-supplied schemaVersion on commit', () => {
+      const { service, doc } = setup({ schemaVersion: 3 });
+      service.acceptAll();
+      const raw = decodeURIComponent(doc.cookie.split('=').slice(1).join('=').split(';')[0]);
+      const parsed = JSON.parse(raw) as ConsentState;
+      expect(parsed.schemaVersion).toBe(3);
+    });
+
+    it('accepts a 0.1.x-style cookie with no schemaVersion as legacy schema 1', () => {
+      const legacy = {
+        granted: { google_analytics: true, hotjar: false, google_ads: false },
+        timestamp: 12345,
+        version: 1,
+        // no schemaVersion — was missing in 0.1.x writes
+      };
+      const cookie = `test_consent_state=${encodeURIComponent(JSON.stringify(legacy))}`;
+      const { service } = setup({}, cookie);
+      expect(service.hasDecided()).toBe(true);
+      expect(service.isGranted('google_analytics')()).toBe(true);
+    });
+
+    it('discards persisted state when schemaVersion mismatches and no migrate is configured', () => {
+      const stale = {
+        granted: { ga_old: true },
+        timestamp: 0,
+        version: 1,
+        schemaVersion: 1,
+      };
+      const cookie = `test_consent_state=${encodeURIComponent(JSON.stringify(stale))}`;
+      const { service } = setup({ schemaVersion: 2 }, cookie);
+      expect(service.hasDecided()).toBe(false);
+      expect(service.bannerVisible()).toBe(true);
+    });
+
+    it('runs migrate when schemaVersion mismatches; adopts the returned state', () => {
+      const old = {
+        granted: { ga: true, hotjar: false, google_ads: false },
+        timestamp: 12345,
+        version: 1,
+        schemaVersion: 1,
+      };
+      const cookie = `test_consent_state=${encodeURIComponent(JSON.stringify(old))}`;
+      const migrate = (stored: unknown): ConsentState => {
+        const o = stored as typeof old;
+        // Rename "ga" -> "google_analytics".
+        return {
+          granted: {
+            google_analytics: o.granted['ga'] === true,
+            hotjar: o.granted['hotjar'] === true,
+            google_ads: o.granted['google_ads'] === true,
+          },
+          timestamp: o.timestamp,
+          version: o.version,
+          schemaVersion: 2,
+        };
+      };
+      const { service } = setup({ schemaVersion: 2, migrate }, cookie);
+      expect(service.hasDecided()).toBe(true);
+      expect(service.isGranted('google_analytics')()).toBe(true);
+      expect(service.isGranted('hotjar')()).toBe(false);
+    });
+
+    it('discards when migrate returns null', () => {
+      const old = {
+        granted: { ga: true },
+        timestamp: 0,
+        version: 1,
+        schemaVersion: 1,
+      };
+      const cookie = `test_consent_state=${encodeURIComponent(JSON.stringify(old))}`;
+      const { service } = setup({ schemaVersion: 2, migrate: () => null }, cookie);
+      expect(service.hasDecided()).toBe(false);
+      expect(service.bannerVisible()).toBe(true);
+    });
+
+    it('still enforces config.version after migrate (prompt-version re-prompt wins)', () => {
+      const old = {
+        granted: { ga: true },
+        timestamp: 0,
+        version: 1,
+        schemaVersion: 1,
+      };
+      const cookie = `test_consent_state=${encodeURIComponent(JSON.stringify(old))}`;
+      const migrate = (): ConsentState => ({
+        granted: { google_analytics: true },
+        timestamp: 0,
+        version: 1, // stale prompt version
+        schemaVersion: 2,
+      });
+      const { service } = setup({ schemaVersion: 2, version: 5, migrate }, cookie);
+      expect(service.hasDecided()).toBe(false);
+    });
+
+    it('rejects malformed (non-object) persisted data without throwing', () => {
+      const cookie = `test_consent_state=${encodeURIComponent('"a-string"')}`;
+      const { service } = setup({}, cookie);
+      expect(service.hasDecided()).toBe(false);
+    });
+  });
+
   describe('essential category override', () => {
     it('user-supplied essential items are honored and always granted', () => {
       const { service } = setup({

@@ -31,6 +31,7 @@ export class ConsentService {
   private readonly injector = inject(Injector);
 
   private readonly cookieName = `${this.config.cookiePrefix ?? 'ngrithms_consent_'}state`;
+  private readonly schemaVersion = this.config.schemaVersion ?? 1;
 
   private readonly stateSignal = signal<ConsentState | null>(this.loadPersisted());
   private readonly bannerVisibleSignal = signal<boolean>(this.stateSignal() === null);
@@ -123,6 +124,7 @@ export class ConsentService {
       granted,
       timestamp: Date.now(),
       version: this.config.version ?? 1,
+      schemaVersion: this.schemaVersion,
     };
     this.cookies.setJSON(this.cookieName, next, this.config.cookieExpiryDays ?? 365);
     this.stateSignal.set(next);
@@ -131,10 +133,23 @@ export class ConsentService {
   }
 
   private loadPersisted(): ConsentState | null {
-    const stored = this.cookies.getJSON<ConsentState>(this.cookieName);
-    if (!stored) return null;
-    if (stored.version !== (this.config.version ?? 1)) return null;
-    return stored;
+    const raw = this.cookies.getJSON<unknown>(this.cookieName);
+    if (!raw || typeof raw !== 'object') return null;
+
+    // Stored schema is implicitly `1` for cookies written by 0.1.x (which didn't stamp it).
+    const candidate = raw as Partial<ConsentState>;
+    const storedSchema = candidate.schemaVersion ?? 1;
+
+    let state: ConsentState | null = null;
+    if (storedSchema === this.schemaVersion) {
+      state = candidate as ConsentState;
+    } else if (this.config.migrate) {
+      state = this.config.migrate(raw);
+    }
+
+    if (!state) return null;
+    if (state.version !== (this.config.version ?? 1)) return null;
+    return state;
   }
 
   private isItemGranted(itemKey: string, state: ConsentState | null): boolean {
