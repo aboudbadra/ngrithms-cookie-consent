@@ -3,13 +3,12 @@
     class="ngr-consent-banner"
     [class]="config.customClass"
     [attr.data-position]="config.position"
-    role="dialog"
-    aria-modal="false"
-    [attr.aria-label]="title()"
+    role="region"
+    aria-labelledby="ngr-consent-banner-title"
   >
     <div class="ngr-consent-banner__inner">
       <div class="ngr-consent-banner__content">
-        <h2 class="ngr-consent-banner__title">{{ title() }}</h2>
+        <h2 id="ngr-consent-banner-title" class="ngr-consent-banner__title">{{ title() }}</h2>
         <p class="ngr-consent-banner__description">{{ description() }}</p>
 
         @if (!config.hideImprint || privacyPolicyUrl()) {
@@ -27,15 +26,16 @@
       <div class="ngr-consent-banner__actions">
         @if (config.showLanguageSwitcher && languages().length > 1) {
           <div class="ngr-consent-banner__lang">
-            <label [attr.aria-label]="languageSwitcherLabel()">
-              <select (change)="setLanguage($any($event.target).value)">
-                @for (code of languages(); track code) {
-                  <option [value]="code" [selected]="code === currentLanguage()">
-                    {{ getLanguagePack(code)?.languageName ?? code }}
-                  </option>
-                }
-              </select>
-            </label>
+            <select
+              [attr.aria-label]="languageSwitcherLabel()"
+              (change)="setLanguage($any($event.target).value)"
+            >
+              @for (code of languages(); track code) {
+                <option [value]="code" [selected]="code === currentLanguage()">
+                  {{ getLanguagePack(code)?.languageName ?? code }}
+                </option>
+              }
+            </select>
           </div>
         }
 

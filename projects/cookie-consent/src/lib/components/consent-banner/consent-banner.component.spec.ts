@@ -66,11 +66,25 @@ describe('ConsentBannerComponent', () => {
     expect(bannerRoot(fixture)).not.toBeNull();
   });
 
-  it('exposes role=dialog and an aria-label for screen readers', () => {
+  it('exposes role=region and is labelled by its title heading', () => {
     const { fixture } = setup();
     const root = bannerRoot(fixture)!;
-    expect(root.getAttribute('role')).toBe('dialog');
-    expect(root.getAttribute('aria-label')).toBe('We use cookies');
+    expect(root.getAttribute('role')).toBe('region');
+    const labelledBy = root.getAttribute('aria-labelledby');
+    expect(labelledBy).toBe('ngr-consent-banner-title');
+    const heading = fixture.nativeElement.querySelector(`#${labelledBy}`);
+    expect(heading?.textContent?.trim()).toBe('We use cookies');
+  });
+
+  it('labels the language switcher via aria-label directly on the select', () => {
+    const { fixture } = setup({
+      availableLanguages: ['en', 'fr'],
+      showLanguageSwitcher: true,
+    });
+    const select = root(fixture).querySelector(
+      '.ngr-consent-banner__lang select',
+    ) as HTMLSelectElement;
+    expect(select.getAttribute('aria-label')).toBe('Change language');
   });
 
   it('renders the title and description from the active language', () => {
@@ -154,6 +168,39 @@ describe('ConsentBannerComponent', () => {
     expect(
       root(fixture).querySelector('.ngr-consent-banner__lang select'),
     ).toBeNull();
+  });
+
+  it('moves focus to the first action button when re-opened from a triggering element', async () => {
+    const trigger = document.createElement('button');
+    trigger.textContent = 'Open prefs';
+    document.body.appendChild(trigger);
+    try {
+      const { fixture, consent } = setup();
+      buttonByText(fixture, 'Accept all')!.click();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(bannerRoot(fixture)).toBeNull();
+
+      trigger.focus();
+      consent.open();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      await new Promise((r) => queueMicrotask(() => r(null)));
+
+      const customise = buttonByText(fixture, 'Customise')!;
+      expect(document.activeElement).toBe(customise);
+    } finally {
+      trigger.remove();
+    }
+  });
+
+  it('does not steal focus when the banner appears on initial page load', () => {
+    const { fixture } = setup();
+    expect(bannerRoot(fixture)).not.toBeNull();
+    // activeElement should still be <body> (or whatever it was before setup ran)
+    // — definitely not a button inside the banner.
+    const inBanner = bannerRoot(fixture)!.contains(document.activeElement);
+    expect(inBanner).toBe(false);
   });
 
   it('switching language updates banner copy reactively', async () => {

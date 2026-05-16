@@ -5,6 +5,42 @@ All notable changes to `@ngrithms/cookie-consent` will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-05-17
+
+Accessibility pass — the work blocking a 1.0 cut. Keyboard and screen-reader users can now actually use the modal end-to-end, and the banner stops misrepresenting itself as a modal dialog. No public API surface changed; existing apps upgrade without code edits.
+
+### Accessibility
+
+- **Banner is now `role="region"` with `aria-labelledby` pointing at its title heading.** Previously it shipped as `role="dialog" aria-modal="false"`, which is an invalid combination and misleads assistive tech into treating a persistent landmark as a focus-trapping modal. The banner is a non-modal cookie-preferences landmark — region is the correct mapping.
+- **Modal focus management.** Opening the modal captures the triggering element, then moves focus to the first focusable inside the dialog. Closing returns focus to the trigger (or falls back to the Customize button / floating badge if the trigger has been removed from the DOM). No more cursor stranded at the top of the page after dismissing the modal.
+- **Focus trap.** Tab and Shift+Tab now wrap within the dialog instead of escaping into background content. The trap manages **every** Tab press manually (not just the first/last) so the modal's tab order is identical across browsers — Safari with macOS "Keyboard navigation" off otherwise skips buttons/links from native Tab navigation entirely.
+- **Escape closes the modal.** Standard expected behaviour for modal dialogs; previously the only ways out were the X, the backdrop, and the footer buttons.
+- **Background `inert` while modal is open.** All sibling children of `<body>` that don't contain the dialog get the `inert` attribute, which removes them from the accessibility tree, the focus order, and pointer events. Cleared on close. Combined with the focus trap, screen-reader virtual-cursor navigation no longer wanders into hidden background content.
+- **Modal uses `aria-labelledby` + `aria-describedby`** pointing at the dialog's heading and description (was `aria-label` only). Keeps the announced name and the visible heading in sync and lets screen readers read the description on dialog focus.
+- **Essential items now render a disabled, checked checkbox** instead of a plain "Always active" text span. Screen readers announce them as "checked, disabled" — conveying both the immutable state and the affirmative status — rather than reading a label that gives no semantic information about the underlying setting. The "Always active" text is preserved as adjacent visual context.
+- **Details-toggle button exposes `aria-expanded` and `aria-controls`.** The cookie-details table gets a deterministic id matching the toggle's `aria-controls`, so screen-reader users know the toggle controls a collapsible region and what its current state is.
+- **Cookie-details table `<th>` cells carry `scope="col"`.** Screen readers can now correctly associate each row's cells with the column header on row-by-row navigation.
+- **Per-item toggle inputs link to their description text via `aria-describedby`.** Focusing a toggle now announces the item's description text alongside its label — useful when the item name alone (e.g. "GA") is not self-explanatory.
+- **Language switcher `<select>` carries `aria-label` directly.** Previously the select was wrapped in an empty `<label>` with `aria-label` on the label, which is a pattern most screen readers do not recover gracefully from.
+- **Banner focus management on re-open.** When the banner is shown via the floating badge (or any host-app trigger like a "Show preferences" link), focus moves to the *Customise* button instead of being lost to `<body>`. Previously, clicking the badge required the user to Tab through the entire page to reach the banner. On true close (after Accept/Reject), focus is restored to the original trigger if it still exists, otherwise to the re-rendered badge. Only fires when the banner is opened by an interactive element — initial-page-load appearance does **not** steal focus from whatever the user was doing.
+- **Badge force-focuses itself before opening.** Safari with macOS "Keyboard navigation" off doesn't focus buttons on click; without this, the banner's "was this triggered by a real element?" check would fail and focus management would skip. The badge now explicitly calls `.focus()` on itself before invoking `consent.open()`.
+- **Visible focus rings on every focusable surface** — banner buttons, banner footer links, language `<select>`, badge, modal close, modal toggle switches, details toggles, and modal footer buttons. All themeable via the new `--ngrithms-focus-ring` CSS custom property (default `#2563eb`). Banner/badge use `:focus-visible` (mouse clicks don't show a ring); modal-internal elements use plain `:focus` so the ring stays visible through programmatic Tab-trap focus moves — Safari does not flip the `:focus-visible` state for programmatic `.focus()` calls. Previously the lib relied on browser-default focus rings, which Safari (especially with macOS "Keyboard navigation" off) does not paint reliably on `<button>` elements.
+- **Modal effect no longer steals focus on page load.** Angular `effect()` fires once on subscribe regardless of signal-value change; the close-side branch was running on the initial `visible() === false` pass, hitting the fallback selector, and pulling focus onto the floating badge before the user had touched anything. Guarded by an internal `hasBeenVisible` flag — close-side logic only runs after the modal has been opened at least once in the session.
+
+### Known limitations
+
+- **Safari + macOS "Keyboard navigation" off**: Tab cycles only through form fields (selects, inputs, textareas) — buttons and links are skipped entirely. This is a UA-level user preference that affects every site on the web, not a library bug. Inside the modal we work around it by managing Tab manually (focus trap), but the banner is a non-modal landmark and per WCAG must not trap focus. Safari users who navigate via keyboard will typically have *System Settings → Keyboard → Keyboard navigation* enabled; VoiceOver users are unaffected (VO has its own navigation independent of this setting).
+
+### Tests
+
+- 130 passing (up from 120). New: banner `role=region` + `aria-labelledby`; language switcher `aria-label`; banner re-open moves focus to Customise; banner does not steal focus on initial page load; modal Escape-closes; focus moves into dialog on open; focus returns to trigger on close; sibling `inert` applied on open and cleared on close; essential items expose a disabled checked checkbox; details toggle exposes aria-expanded/controls; th carries scope=col; toggles linked to description via aria-describedby; modal does not steal focus to fallback on initial render before first open.
+
+### Deferred (planned for v0.5.1 polish)
+
+- Body scroll lock while modal is open.
+- Focus-management config knob for apps that want to suppress the trap (e.g. testing harnesses).
+- Optional `bannerMode: 'modal'` config that makes the banner a real focus-trapping dialog for apps that want GDPR-style "user must decide before doing anything" behaviour — also resolves the Safari + kbd-nav-off banner Tab-cycle limitation for those apps.
+
 ## [0.4.0] — 2026-05-15
 
 ### Added

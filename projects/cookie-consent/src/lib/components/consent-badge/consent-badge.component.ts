@@ -20,7 +20,7 @@ import { LanguageService } from '../../services/language.service';
         [class]="config.customOpenerClass"
         [attr.data-position]="config.badgePosition"
         [attr.aria-label]="openLabel()"
-        (click)="open()"
+        (click)="open($event)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +64,10 @@ import { LanguageService } from '../../services/language.service';
       .ngr-consent-badge:hover {
         transform: translateY(-1px);
       }
+      .ngr-consent-badge:focus-visible {
+        outline: 2px solid var(--ngrithms-focus-ring, #2563eb);
+        outline-offset: 2px;
+      }
       .ngr-consent-badge[data-position='left-bottom'] {
         left: var(--ngrithms-badge-offset, 16px);
         bottom: var(--ngrithms-badge-offset, 16px);
@@ -98,7 +102,12 @@ export class ConsentBadgeComponent {
       !this.consent.bannerVisible(),
   );
 
-  open(): void {
+  open(event?: Event): void {
+    // Force-focus the badge before opening so the banner's focus management
+    // sees a real trigger element — Safari with macOS "Keyboard navigation"
+    // off otherwise doesn't focus buttons on click and the banner would
+    // think the open was untriggered (initial-page-load case).
+    (event?.currentTarget as HTMLElement | undefined)?.focus();
     this.consent.open();
   }
 }

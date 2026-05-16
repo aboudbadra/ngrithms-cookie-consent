@@ -98,23 +98,30 @@ describe('ConsentModalComponent', () => {
     expect(modalRoot(fixture)).not.toBeNull();
   });
 
-  it('exposes role=dialog and aria-modal=true', async () => {
+  it('exposes role=dialog, aria-modal=true, and aria-labelledby pointing at the H2', async () => {
     const { fixture, consent } = setup();
     await openModal(fixture, consent);
     const r = modalRoot(fixture)!;
     expect(r.getAttribute('role')).toBe('dialog');
     expect(r.getAttribute('aria-modal')).toBe('true');
-    expect(r.getAttribute('aria-label')).toBeTruthy();
+    const labelledBy = r.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    const heading = root(fixture).querySelector(`#${labelledBy}`);
+    expect(heading?.tagName).toBe('H2');
+    expect(heading?.textContent?.trim()).toBeTruthy();
   });
 
-  it('shows "Always active" instead of a toggle for essential items', async () => {
+  it('exposes essential items as a disabled checked checkbox (screen-reader semantics)', async () => {
     const { fixture, consent } = setup();
     await openModal(fixture, consent);
     const items = Array.from(root(fixture).querySelectorAll('.ngr-consent-modal__item')) as HTMLElement[];
     const essential = items.find((el) => el.textContent?.includes('Session'));
     expect(essential).toBeTruthy();
+    const cb = essential!.querySelector('input[type="checkbox"]') as HTMLInputElement | null;
+    expect(cb).not.toBeNull();
+    expect(cb!.checked).toBe(true);
+    expect(cb!.disabled).toBe(true);
     expect(essential!.textContent).toContain('Always active');
-    expect(essential!.querySelector('input[type="checkbox"]')).toBeNull();
   });
 
   it('toggles a non-essential item and commits it via "Save preferences"', async () => {
@@ -195,5 +202,117 @@ describe('ConsentModalComponent', () => {
     await openModal(fixture, consent);
     expect(checkboxFor(fixture, 'GA')!.checked).toBe(true);
     expect(checkboxFor(fixture, 'Hotjar')!.checked).toBe(false);
+  });
+
+  it('details toggle exposes aria-expanded and aria-controls pointing at the table', async () => {
+    const { fixture, consent } = setup();
+    await openModal(fixture, consent);
+    const toggle = buttonByText(fixture, 'Show details')!;
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    const controlsId = toggle.getAttribute('aria-controls');
+    expect(controlsId).toBeTruthy();
+    toggle.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(buttonByText(fixture, 'Hide details')!.getAttribute('aria-expanded')).toBe('true');
+    expect(root(fixture).querySelector(`#${controlsId}`)).not.toBeNull();
+  });
+
+  it('cookie-details table marks th cells with scope="col"', async () => {
+    const { fixture, consent } = setup();
+    await openModal(fixture, consent);
+    buttonByText(fixture, 'Show details')!.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const headers = Array.from(
+      root(fixture).querySelectorAll('.ngr-consent-modal__cookies th'),
+    ) as HTMLTableCellElement[];
+    expect(headers.length).toBeGreaterThan(0);
+    expect(headers.every((th) => th.getAttribute('scope') === 'col')).toBe(true);
+  });
+
+  it('non-essential toggles are linked to their description via aria-describedby', async () => {
+    const { fixture, consent } = setup();
+    await openModal(fixture, consent);
+    const cb = checkboxFor(fixture, 'GA')!;
+    const describedBy = cb.getAttribute('aria-describedby');
+    expect(describedBy).toBeTruthy();
+    const desc = root(fixture).querySelector(`#${describedBy}`);
+    expect(desc?.textContent).toContain('Tracks visits.');
+  });
+
+  it('pressing Escape closes the modal', async () => {
+    const { fixture, consent } = setup();
+    await openModal(fixture, consent);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(consent.modalVisible()).toBe(false);
+  });
+
+  it('moves focus into the dialog on open', async () => {
+    const { fixture, consent } = setup();
+    await openModal(fixture, consent);
+    await new Promise((resolve) => queueMicrotask(() => resolve(null)));
+    const dialog = modalRoot(fixture)!;
+    expect(dialog.contains(document.activeElement)).toBe(true);
+  });
+
+  it('marks sibling body children as inert while open and clears them on close', async () => {
+    const sibling = document.createElement('div');
+    sibling.id = 'app-bg-test';
+    document.body.appendChild(sibling);
+    try {
+      const { fixture, consent } = setup();
+      await openModal(fixture, consent);
+      await new Promise((resolve) => queueMicrotask(() => resolve(null)));
+      expect(sibling.hasAttribute('inert')).toBe(true);
+      consent.closeModal();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(sibling.hasAttribute('inert')).toBe(false);
+    } finally {
+      sibling.remove();
+    }
+  });
+
+  it('does not steal focus to the fallback (badge) on initial render when never opened', async () => {
+    const badge = document.createElement('button');
+    badge.className = 'ngr-consent-badge';
+    badge.textContent = 'badge';
+    document.body.appendChild(badge);
+    const sentinel = document.createElement('input');
+    sentinel.type = 'text';
+    document.body.appendChild(sentinel);
+    sentinel.focus();
+    try {
+      setup();
+      await new Promise((r) => queueMicrotask(() => r(null)));
+      expect(document.activeElement).toBe(sentinel);
+      expect(document.activeElement).not.toBe(badge);
+    } finally {
+      badge.remove();
+      sentinel.remove();
+    }
+  });
+
+  it('restores focus to the triggering element on close', async () => {
+    const trigger = document.createElement('button');
+    trigger.textContent = 'Open prefs';
+    document.body.appendChild(trigger);
+    try {
+      const { fixture, consent } = setup();
+      trigger.focus();
+      await openModal(fixture, consent);
+      await new Promise((resolve) => queueMicrotask(() => resolve(null)));
+      expect(document.activeElement).not.toBe(trigger);
+      consent.closeModal();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      await new Promise((resolve) => queueMicrotask(() => resolve(null)));
+      expect(document.activeElement).toBe(trigger);
+    } finally {
+      trigger.remove();
+    }
   });
 });
